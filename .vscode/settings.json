@@ -1,0 +1,6 @@
+{
+    "swift.path": "/home/paradigm/.local/share/swiftly/toolchains/6.0.3/usr/bin",
+    "swift.swiftEnvironmentVariables": {
+        "DEVELOPER_DIR": "public"
+    }
+}
