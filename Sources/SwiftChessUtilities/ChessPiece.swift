@@ -92,6 +92,7 @@ public enum ChessPiece : CaseIterable, Sendable {
     }
 }
 
+// MARK: Active
 extension ChessPiece {
     public struct Active : Hashable, Sendable {
         public var piece:ChessPiece
