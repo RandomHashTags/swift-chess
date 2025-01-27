@@ -5,6 +5,6 @@
 //  Created by Evan Anderson on 1/26/25.
 //
 
-enum ChessMoveError : Error {
+public enum ChessMoveError : Error {
     case illegal
 }

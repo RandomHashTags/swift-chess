@@ -5,7 +5,7 @@
 //  Created by Evan Anderson on 1/26/25.
 //
 
-enum ChessPlayer : Hashable {
+public enum ChessPlayer : Hashable, Sendable {
     /// Player 1
     case white
 
@@ -15,7 +15,8 @@ enum ChessPlayer : Hashable {
 
 // MARK: Starting positions
 extension ChessPlayer {
-    func startingPositions(for piece: ChessPiece, at board: ChessBoard) -> Set<ChessPosition> {
+    @inlinable
+    public func startingPositions(for piece: ChessPiece, at board: ChessBoard) -> Set<ChessPosition> {
         let rank:Int
         let pawnRankAddition:Int
         switch self {
@@ -59,10 +60,13 @@ extension ChessPlayer {
 
 // MARK: Can move
 extension ChessPlayer {
-    func canMove(_ piece: ChessPiece.Active, move: ChessMove, for game: ChessGame) -> Bool {
+    @inlinable
+    public func canMove(_ piece: ChessPiece.Active, move: ChessMove, for game: ChessGame) -> Bool {
         return canMove(piece, from: move.from, to: move.to, for: game)
     }
-    func canMove(_ piece: ChessPiece.Active, from: ChessPosition, to: ChessPosition, for game: ChessGame) -> Bool {
+
+    @inlinable
+    public func canMove(_ piece: ChessPiece.Active, from: ChessPosition, to: ChessPosition, for game: ChessGame) -> Bool {
         let distance:(files: Int, ranks: Int) = from.distance(to: to)
         var canMove:Bool = canMove(piece: piece.piece, firstMove: piece.firstMove, distance: distance)
         if !canMove {
@@ -85,7 +89,8 @@ extension ChessPlayer {
         return canMove
     }
 
-    func canMove(
+    @inlinable
+    public func canMove(
         piece: ChessPiece,
         firstMove: Bool,
         distance: (files: Int, ranks: Int)
@@ -130,7 +135,8 @@ extension ChessPlayer {
 
 // MARK: Can move directionally
 extension ChessPlayer {
-    func canMoveDirectionally(_ piece: ChessPiece.Active, from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
+    @inlinable
+    public func canMoveDirectionally(_ piece: ChessPiece.Active, from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
         // TODO: make sure moving doesn't cause a check
         switch piece.piece {
         case .pawn:
@@ -157,7 +163,9 @@ extension ChessPlayer {
             return true
         }
     }
-    func canMoveHorizontally(from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
+    
+    @inlinable
+    public func canMoveHorizontally(from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
         let doesCapture:Bool = doesCapture(from: from, distance: distance, game: game)
         let increment:Int = distance.files > 0 ? -1 : 1
         for i in stride(from: distance.files + (doesCapture ? increment : 0), to: from.file, by: increment) {
@@ -167,7 +175,9 @@ extension ChessPlayer {
         }
         return true
     }
-    func canMoveVertically(from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
+
+    @inlinable
+    public func canMoveVertically(from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
         let doesCapture:Bool = doesCapture(from: from, distance: distance, game: game)
         let increment:Int = distance.ranks > 0 ? -1 : 1
         for i in stride(from: distance.ranks + (doesCapture ? increment : 0), to: from.rank, by: increment) {
@@ -177,7 +187,9 @@ extension ChessPlayer {
         }
         return true
     }
-    func canMoveDiagonally(from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
+
+    @inlinable
+    public func canMoveDiagonally(from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
         let doesCapture:Bool = doesCapture(from: from, distance: distance, game: game)
         let increment:Int = distance.files > 0 ? 1 : -1
         for i in stride(from: distance.files + (doesCapture ? increment : 0), to: from.file, by: increment) {
@@ -187,7 +199,9 @@ extension ChessPlayer {
         }
         return true
     }
-    func doesCapture(from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
+
+    @inlinable
+    public func doesCapture(from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
         guard let capturable:ChessPiece.Active = game.positions[from + distance] else { return false }
         return capturable.owner != game.thinking
     }

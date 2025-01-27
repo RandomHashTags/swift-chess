@@ -5,19 +5,19 @@
 //  Created by Evan Anderson on 1/26/25.
 //
 
-struct ChessBoard : Sendable {
+public struct ChessBoard : Sendable {
     /// Horizontal
-    let files:Int
+    public let files:Int
 
     /// Vertical
-    let ranks:Int
+    public let ranks:Int
 
-    init(files: Int = 8, ranks: Int = 8) {
+    public init(files: Int = 8, ranks: Int = 8) {
         self.files = files
         self.ranks = ranks
     }
 
-    func display(with positions: [ChessPosition:ChessPiece.Active]) {
+    public func display(with positions: [ChessPosition:ChessPiece.Active]) {
         let filesTimes2:Int = files*2
         var string:String = ""
         for _ in 0..<files/2 {

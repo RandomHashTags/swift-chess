@@ -5,7 +5,7 @@
 //  Created by Evan Anderson on 1/26/25.
 //
 
-enum ChessPiece : CaseIterable {
+public enum ChessPiece : CaseIterable, Sendable {
     case pawn
 
     case bishop
@@ -16,7 +16,8 @@ enum ChessPiece : CaseIterable {
 
     case king
 
-    var symbol : String {
+    @inlinable
+    public var symbol : String {
         switch self {
         case .pawn: return ""
         case .bishop: return "B"
@@ -92,12 +93,13 @@ enum ChessPiece : CaseIterable {
 }
 
 extension ChessPiece {
-    struct Active : Hashable {
-        var piece:ChessPiece
-        var owner:ChessPlayer
-        var firstMove:Bool
-        
-        func `is`(_ piece: ChessPiece) -> Bool {
+    public struct Active : Hashable, Sendable {
+        public var piece:ChessPiece
+        public var owner:ChessPlayer
+        public var firstMove:Bool
+
+        @inlinable
+        public func `is`(_ piece: ChessPiece) -> Bool {
             return self.piece == piece
         }
     }

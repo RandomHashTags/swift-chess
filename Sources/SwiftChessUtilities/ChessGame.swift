@@ -5,31 +5,31 @@
 //  Created by Evan Anderson on 1/26/25.
 //
 
-struct ChessGame {
-    let clock:ContinuousClock
-    let chessClock:ChessClock?
-    let board:ChessBoard
-    private(set) var move:Int = 1
+public struct ChessGame : Sendable {
+    public let clock:ContinuousClock
+    public let chessClock:ChessClock?
+    public let board:ChessBoard
+    public var move:Int = 1
 
-    private var thinkingInstant:ContinuousClock.Instant
-    private var player1RemainingThinkDuration:ContinuousClock.Duration
-    private var player2RemainingThinkDuration:ContinuousClock.Duration
-    var positions:[ChessPosition:ChessPiece.Active]
+    public var thinkingInstant:ContinuousClock.Instant
+    public var player1RemainingThinkDuration:ContinuousClock.Duration
+    public var player2RemainingThinkDuration:ContinuousClock.Duration
+    public var positions:[ChessPosition:ChessPiece.Active]
 
-    private(set) var log:[LogEntry]
+    public var log:[LogEntry]
 
-    let player1:ChessPlayer
-    let player2:ChessPlayer
+    public let player1:ChessPlayer
+    public let player2:ChessPlayer
     /// Which player got to make the first move.
-    let firstMove:ChessPlayer
+    public let firstMove:ChessPlayer
 
     /// Who's turn it is to make a move.
-    private(set) var thinking:ChessPlayer
+    public var thinking:ChessPlayer
 
-    private(set) var inCheck:Bool
-    private(set) var inCheckmate:Bool
+    public var inCheck:Bool
+    public var inCheckmate:Bool
 
-    init(
+    public init(
         chessClock: ChessClock?,
         board: ChessBoard = ChessBoard(),
         player1: ChessPlayer = .white,
@@ -68,16 +68,18 @@ struct ChessGame {
         inCheckmate = false
     }
 
-
-    var thinkingDuration : Duration {
+    @inlinable
+    public var thinkingDuration : Duration {
         return thinkingInstant - clock.now
     }
 
-    func piece(at position: ChessPosition) -> ChessPiece.Active? {
+    @inlinable
+    public func piece(at position: ChessPosition) -> ChessPiece.Active? {
         return positions[position]
     }
 
-    mutating func move(_ move: ChessMove) throws -> ChessMove.Result {
+    @inlinable
+    public mutating func move(_ move: ChessMove) throws -> ChessMove.Result {
         let thinkDuration:Duration = thinkingDuration
         guard var piece:ChessPiece.Active = piece(at: move.from), piece.owner == thinking, thinking.canMove(piece, move: move, for: self) else {
             throw ChessMoveError.illegal
@@ -120,13 +122,21 @@ struct ChessGame {
 
 // MARK: LogEntry
 extension ChessGame {
-    struct LogEntry {
-        let thinkDuration:Duration
-        let player:ChessPlayer
-        let piece:ChessPiece
-        let move:ChessMove
+    public struct LogEntry : Sendable {
+        public let thinkDuration:Duration
+        public let player:ChessPlayer
+        public let piece:ChessPiece
+        public let move:ChessMove
 
-        var isEnPassantable : Bool {
+        public init(thinkDuration: Duration, player: ChessPlayer, piece: ChessPiece, move: ChessMove) {
+            self.thinkDuration = thinkDuration
+            self.player = player
+            self.piece = piece
+            self.move = move
+        }
+
+        @inlinable
+        public var isEnPassantable : Bool {
             return piece == .pawn && (move.distance.ranks == 2 || move.distance.ranks == -2)
         }
     }
@@ -134,6 +144,7 @@ extension ChessGame {
 
 // MARK: Check status
 extension ChessGame {
+    @usableFromInline
     mutating func calculateCheckStatus() {
         for (kingPos, piece) in positions {
             if piece.piece == .king && piece.owner == thinking {
@@ -276,7 +287,7 @@ extension ChessGame {
 // MARK: Checkmate status
 extension ChessGame {
     /// Thinking player is in check; calculate if it is checkmate
-    mutating func calculateCheckmateStatus(kingPos: ChessPosition) {
+    mutating func calculateCheckmateStatus(kingPos: ChessPosition) { // TODO: finish
         inCheck = true
         inCheckmate = false
     }

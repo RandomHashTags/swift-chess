@@ -5,6 +5,8 @@
 //  Created by Evan Anderson on 1/26/25.
 //
 
-enum ChessVariant {
-    case classic
+public enum ChessVariant {
+    case bullet
+    case classical
+    case rapid
 }

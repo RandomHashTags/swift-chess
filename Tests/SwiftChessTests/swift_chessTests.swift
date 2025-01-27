@@ -5,8 +5,10 @@
 //  Created by Evan Anderson on 1/26/25.
 //
 
+#if compiler(>=6.0)
+
 import Testing
-@testable import swift_chess
+@testable import SwiftChessUtilities
 
 struct SwiftChessTests {
     let game:ChessGame = ChessGame(chessClock: nil, board: ChessBoard(), player1: .white, player2: .black, firstMove: .white)
@@ -100,3 +102,5 @@ struct SwiftChessTests {
     }
     */
 }
+
+#endif

@@ -5,7 +5,7 @@
 //  Created by Evan Anderson on 1/26/25.
 //
 
-enum ChessResult {
+public enum ChessResult {
     case draw
     case lost
     case resigned
