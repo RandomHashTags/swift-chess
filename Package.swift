@@ -12,7 +12,11 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/swiftlang/swift-syntax", from: "600.0.1")
+        // Macros
+        .package(url: "https://github.com/swiftlang/swift-syntax", from: "600.0.1"),
+
+        // UI
+        //.package(url: "https://git.aparoksha.dev/aparoksha/adwaita-swift", from: "0.1.0")
     ],
     targets: [
         .macro(
@@ -29,6 +33,14 @@ let package = Package(
             name: "SwiftChessUtilities",
             dependencies: [
                 "SwiftChessMacros"
+            ]
+        ),
+
+        .executableTarget(
+            name: "SwiftChessUI",
+            dependencies: [
+                "SwiftChessUtilities",
+                //.product(name: "Adwaita", package: "adwaita-swift")
             ]
         ),
 

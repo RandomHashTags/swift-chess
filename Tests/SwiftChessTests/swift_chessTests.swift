@@ -13,6 +13,25 @@ import Testing
 struct SwiftChessTests {
     let game:ChessGame = ChessGame(chessClock: nil, board: ChessBoard(), player1: .white, player2: .black, firstMove: .white)
 
+    @Test func fileMacro() {
+        #expect(#chessFile(.a) == 0b0000000100000001000000010000000100000001000000010000000100000001)
+        #expect(#chessFile(.b) == 0b0000001000000010000000100000001000000010000000100000001000000010)
+        #expect(#chessFile(.c) == 0b0000010000000100000001000000010000000100000001000000010000000100)
+
+        #expect(#chessFile(.h) == 0b1000000010000000100000001000000010000000100000001000000010000000)
+        #expect(#chessFile(.g) == 0b0100000001000000010000000100000001000000010000000100000001000000)
+    }
+
+    @Test func notFileMacro() {
+        #expect(#chessFile(.notA) == 0b1111111011111110111111101111111011111110111111101111111011111110)
+        #expect(#chessFile(.notH) == 0b0111111101111111011111110111111101111111011111110111111101111111)
+    }
+
+    @Test func rookAttackMacro() {
+        let test:UInt64 = #chessAttack(.rook)
+        //print(String(test, radix: 2))
+    }
+
     @Test func positionDistance() {
         var one:ChessPosition = ChessPosition(file: 4, rank: 0)
         var two:ChessPosition = ChessPosition(file: 4, rank: 3)

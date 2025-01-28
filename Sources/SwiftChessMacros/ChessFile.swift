@@ -11,17 +11,26 @@ import SwiftSyntaxMacros
 
 enum ChessFile : ExpressionMacro {
     static func expansion(of node: some FreestandingMacroExpansionSyntax, in context: some MacroExpansionContext) throws -> ExprSyntax {
-        let value:UInt64
-        switch node.arguments.last?.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text {
-            case "b": value = 4629771061636907072
-            case "c": value = 2314885530818453536
-            case "d": value = 1157442765409226768
-            case "e": value = 578721382704613384
-            case "f": value = 289360691352306692
-            case "g": value = 144680345676153346
-            case "h": value = 72340172838076673
-            default:  value = 9259542123273814144
-        }
+        let text:String? = node.arguments.last?.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text
+        let value:UInt64 = get(text: text)
         return "UInt64(\(raw: value))"
+    }
+
+    static func get(text: String?) -> UInt64 {
+        var value:UInt64 = 0x0101010101010101
+        switch text?.last {
+        case "b", "B": value <<= 1
+        case "c", "C": value <<= 2
+        case "d", "D": value <<= 3
+        case "e", "E": value <<= 4
+        case "f", "F": value <<= 5
+        case "g", "G": value <<= 6
+        case "h", "H": value <<= 7
+        default:  break
+        }
+        if text?.last?.isUppercase ?? false {
+            value = ~value
+        }
+        return value
     }
 }

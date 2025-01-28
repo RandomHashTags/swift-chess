@@ -292,3 +292,24 @@ extension ChessGame {
         inCheckmate = false
     }
 }
+
+// MARK: Bit Boards
+extension ChessGame {
+    struct BitBoards {
+        public internal(set) var playerBlack:Player
+        public internal(set) var playerWhite:Player
+    }
+}
+
+extension ChessGame.BitBoards {
+    struct Player {
+        public internal(set) var pieces:UInt64
+
+        public internal(set) var pawns:UInt64
+        public internal(set) var rooks:UInt64
+        public internal(set) var knights:UInt64
+        public internal(set) var bishops:UInt64
+        public internal(set) var queens:UInt64
+        public internal(set) var king:UInt64
+    }
+}

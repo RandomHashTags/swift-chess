@@ -12,6 +12,7 @@ import SwiftSyntaxMacros
 struct SwiftChessMacros : CompilerPlugin {
     let providingMacros:[any Macro.Type] = [
         ChessFile.self,
-        ChessRank.self
+        ChessRank.self,
+        ChessAttack.self
     ]
 }

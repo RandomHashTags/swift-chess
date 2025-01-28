@@ -15,6 +15,15 @@ public enum ChessFile {
     case f
     case g
     case h
+
+    case notA
+    case notB
+    case notC
+    case notD
+    case notE
+    case notF
+    case notG
+    case notH
 }
 
 @freestanding(expression)
@@ -33,4 +42,8 @@ public enum ChessRank {
 }
 
 @freestanding(expression)
-public macro chessRank(_ rank: ChessRank) -> UInt8 = #externalMacro(module: "SwiftChessMacros", type: "ChessRank")
+public macro chessRank(_ rank: ChessRank) -> UInt64 = #externalMacro(module: "SwiftChessMacros", type: "ChessRank")
+
+// MARK: Attack
+@freestanding(expression)
+public macro chessAttack(_ piece: ChessPiece) -> UInt64 = #externalMacro(module: "SwiftChessMacros", type: "ChessAttack")
