@@ -13,6 +13,20 @@ import Testing
 struct SwiftChessTests {
     let game:ChessGame = ChessGame(chessClock: nil, board: ChessBoard(), player1: .white, player2: .black, firstMove: .white)
 
+    func binary(_ number : UInt64, toSize: Int = 64) -> String {
+        let string:String = String(number, radix: 2)
+        let padded:String = String(repeating: "0", count: 64 - string.count) + string
+        var s:String = ""
+        for (index, char) in String(padded).enumerated() {
+            if index % 8 == 0 {
+                s.append("\n")
+            }
+            s.append(char)
+        }
+        print(padded)
+        return s
+    }
+
     @Test func fileMacro() {
         #expect(#chessFile(.a) == 0b0000000100000001000000010000000100000001000000010000000100000001)
         #expect(#chessFile(.b) == 0b0000001000000010000000100000001000000010000000100000001000000010)
@@ -27,9 +41,19 @@ struct SwiftChessTests {
         #expect(#chessFile(.notH) == 0b0111111101111111011111110111111101111111011111110111111101111111)
     }
 
+    @Test func pawnAttackMacro() {
+        let test:UInt64 = #chessAttack(piece: .pawn, file: .b, rank: ._2)
+        print("pawnAttackMacro=" + binary(test))
+    }
+
+    @Test func bishopAttackMacro() {
+        let test:UInt64 = #chessAttack(piece: .bishop, file: .h, rank: ._1)
+        print("bishopAttackMacro=" + binary(test))
+    }
+    
     @Test func rookAttackMacro() {
-        let test:UInt64 = #chessAttack(.rook)
-        //print(String(test, radix: 2))
+        let test:UInt64 = #chessAttack(piece: .rook, file: .a, rank: ._1)
+        print("rookAttackMacro=" + binary(test))
     }
 
     @Test func positionDistance() {

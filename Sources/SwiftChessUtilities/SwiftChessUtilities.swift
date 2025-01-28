@@ -46,4 +46,4 @@ public macro chessRank(_ rank: ChessRank) -> UInt64 = #externalMacro(module: "Sw
 
 // MARK: Attack
 @freestanding(expression)
-public macro chessAttack(_ piece: ChessPiece) -> UInt64 = #externalMacro(module: "SwiftChessMacros", type: "ChessAttack")
+public macro chessAttack(piece: ChessPiece, file: ChessFile, rank: ChessRank) -> UInt64 = #externalMacro(module: "SwiftChessMacros", type: "ChessAttack")
