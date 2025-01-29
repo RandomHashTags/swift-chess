@@ -52,7 +52,7 @@ public struct ChessGame : Sendable {
         thinking = firstMove
         thinkingInstant = clock.now
         var pos:[ChessPosition:ChessPiece.Active] = [:]
-        for piece in ChessPiece.allCases {
+        for piece in [ChessPiece.pawn(.black), .rook, .knight, .bishop, .queen, .king] {
             let positions1:Set<ChessPosition> = player1.startingPositions(for: piece, at: board)
             for position in positions1 {
                 pos[position] = ChessPiece.Active(piece: piece, owner: player1, firstMove: true)
@@ -137,7 +137,12 @@ extension ChessGame {
 
         @inlinable
         public var isEnPassantable : Bool {
-            return piece == .pawn && (move.distance.ranks == 2 || move.distance.ranks == -2)
+            switch piece {
+            case .pawn(let owner):
+                return owner == .white ? move.distance.ranks == 2 : move.distance.ranks == -2
+            default:
+                return false
+            }
         }
     }
 }

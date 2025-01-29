@@ -5,8 +5,8 @@
 //  Created by Evan Anderson on 1/26/25.
 //
 
-public enum ChessPiece : CaseIterable, Sendable {
-    case pawn
+public enum ChessPiece : Hashable, Equatable, Sendable {
+    case pawn(ChessPlayer)
 
     case bishop
     case rook

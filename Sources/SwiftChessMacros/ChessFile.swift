@@ -19,6 +19,7 @@ enum ChessFile : ExpressionMacro {
     static func get(text: String?) -> UInt64 {
         var value:UInt64 = 0x0101010101010101
         switch text?.last {
+        case "a", "A": break
         case "b", "B": value <<= 1
         case "c", "C": value <<= 2
         case "d", "D": value <<= 3
@@ -26,7 +27,7 @@ enum ChessFile : ExpressionMacro {
         case "f", "F": value <<= 5
         case "g", "G": value <<= 6
         case "h", "H": value <<= 7
-        default:  break
+        default:       return 0
         }
         if text?.last?.isUppercase ?? false {
             value = ~value

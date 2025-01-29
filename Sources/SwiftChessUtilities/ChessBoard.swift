@@ -33,7 +33,7 @@ public struct ChessBoard : Sendable {
             for file in 0..<files {
                 let position:ChessPosition = ChessPosition(file: file, rank: rank)
                 if let active:ChessPiece.Active = positions[position] {
-                    string += active.piece == .pawn ? "p" : active.piece.symbol
+                    string += active.is(.pawn(.white)) ? "p" : active.piece.symbol
                 } else {
                     string += " "
                 }

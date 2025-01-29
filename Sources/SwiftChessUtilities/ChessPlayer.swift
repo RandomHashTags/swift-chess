@@ -70,7 +70,8 @@ extension ChessPlayer {
         let distance:(files: Int, ranks: Int) = from.distance(to: to)
         var canMove:Bool = canMove(piece: piece.piece, firstMove: piece.firstMove, distance: distance)
         if !canMove {
-            if piece.piece == .pawn {
+            switch piece.piece {
+            case .pawn(_):
                 let isCapture:Bool = distance == (1, 1) || distance == (1, -1) || distance == (-1, 1) || distance == (-1, -1)
                 if isCapture {
                     if let capturable:ChessPiece.Active = game.positions[to], capturable.owner != game.thinking {
@@ -81,6 +82,9 @@ extension ChessPlayer {
                         canMove = true
                     }
                 }
+                break
+            default:
+                break
             }
         } else {
             // make sure it can move there legally (no square in the path to get there has a piece or impedes movement)

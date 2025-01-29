@@ -18,6 +18,7 @@ enum ChessRank : ExpressionMacro {
     static func get(text: String?) -> UInt64 {
         var value:UInt64 = 0b0000000000000000000000000000000000000000000000000000000011111111
         switch text {
+        case "_1": break
         case "_2": value <<= 8
         case "_3": value <<= 16
         case "_4": value <<= 24
@@ -25,7 +26,7 @@ enum ChessRank : ExpressionMacro {
         case "_6": value <<= 40
         case "_7": value <<= 48
         case "_8": value <<= 56
-        default:   break
+        default:   return 0
         }
         return value
     }
