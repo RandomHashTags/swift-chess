@@ -39,13 +39,24 @@ struct AttackMacroTests {
     }
 
     @Test func knightAttackMacro() {
-        ////
-        var expected:UInt64 = 1
+        var expected:UInt64 = 11068131838464
         var attacks:UInt64 = #chessAttack(piece: .knight, file: .c, rank: ._4)
         #expect(attacks == expected, attackComment(expected: expected, actual: attacks))
 
-        expected = 1
+        expected = 132096
         attacks = #chessAttack(piece: .knight, file: .a, rank: ._1)
+        #expect(attacks == expected, attackComment(expected: expected, actual: attacks))
+
+        expected = 1128098930098176
+        attacks = #chessAttack(piece: .knight, file: .a, rank: ._8)
+        #expect(attacks == expected, attackComment(expected: expected, actual: attacks))
+
+        expected = 4202496
+        attacks = #chessAttack(piece: .knight, file: .h, rank: ._1)
+        #expect(attacks == expected, attackComment(expected: expected, actual: attacks))
+
+        expected = 9077567998918656
+        attacks = #chessAttack(piece: .knight, file: .h, rank: ._8)
         #expect(attacks == expected, attackComment(expected: expected, actual: attacks))
     }
 
