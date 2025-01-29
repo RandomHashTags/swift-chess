@@ -9,6 +9,7 @@ public struct ChessGame : Sendable {
     public let clock:ContinuousClock
     public let chessClock:ChessClock?
     public let board:ChessBoard
+    //public internal(set) var bitBoards:BitBoards
     public var move:Int = 1
 
     public var thinkingInstant:ContinuousClock.Instant
@@ -300,21 +301,80 @@ extension ChessGame {
 
 // MARK: Bit Boards
 extension ChessGame {
-    struct BitBoards {
+    public struct BitBoards : Sendable {
+        public internal(set) var populatedSquares:UInt64 = #chessBitMap(.newGame)
         public internal(set) var playerBlack:Player
         public internal(set) var playerWhite:Player
+
+        public init(
+            populatedSquares: UInt64
+        ) {
+            self.populatedSquares = populatedSquares
+            playerBlack = Player()
+            playerWhite = Player()
+        }
+
+        @inlinable
+        public func inCheck(turn: ChessPlayer) -> Bool {
+            let defending:Player, attacking:Player
+            switch turn {
+            case .black:
+                attacking = playerWhite
+                defending = playerBlack
+            case .white:
+                attacking = playerBlack
+                defending = playerWhite
+            }
+            return defending.king & attacking.attacking > 0
+        }
     }
 }
 
 extension ChessGame.BitBoards {
-    struct Player {
+    public struct Player : Sendable {
         public internal(set) var pieces:UInt64
+        public internal(set) var pinnedPieces:UInt64
 
+        /// Squares under attack by the pieces.
+        public internal(set) var attacking:UInt64
+        /// Squares for the attacking pieces.
+        public internal(set) var attackers:UInt64
+
+        /// Populated squares the pieces are defending.
+        public internal(set) var defending:UInt64
+        /// Squares for the defending pieces.
+        public internal(set) var defenders:UInt64
+
+        /// Squares for the pawns.
         public internal(set) var pawns:UInt64
+        /// Squares for the rooks.
         public internal(set) var rooks:UInt64
+        /// Squares for the knights.
         public internal(set) var knights:UInt64
         public internal(set) var bishops:UInt64
         public internal(set) var queens:UInt64
         public internal(set) var king:UInt64
+
+        public init() {
+            pieces = 0
+            pinnedPieces = 0
+            attacking = 0
+            attackers = 0
+            defending = 0
+            defenders = 0
+            pawns = 0
+            rooks = 0
+            knights = 0
+            bishops = 0
+            queens = 0
+            king = 0
+        }
+
+        @inlinable
+        public func defenders(for squares: UInt64) -> UInt64 {
+            var value:UInt64 = 0
+            let d:UInt64 = defending & squares
+            return value
+        }
     }
 }

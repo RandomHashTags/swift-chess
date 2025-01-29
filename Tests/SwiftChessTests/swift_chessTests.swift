@@ -118,3 +118,19 @@ struct SwiftChessTests {
 }
 
 #endif
+
+func binary(_ number : UInt64) -> String {
+    let string:String = String.init(number, radix: 2)
+    let padded:String = String(repeating: "0", count: 64 - string.count) + string
+    var s:String = ""
+    var lastIndex:String.Index = padded.startIndex
+    for _ in 0..<8 {
+        let slice = padded[lastIndex..<padded.index(lastIndex, offsetBy: 8)].reversed()
+        s += "\n" + slice
+        padded.formIndex(&lastIndex, offsetBy: 8)
+    }
+    return "\n" + s
+}
+func bitMapComment(expected: UInt64, actual: UInt64) -> Comment {
+    return Comment(rawValue: "expected=" + binary(expected) + "\nactual=" + binary(actual))
+}
