@@ -92,6 +92,13 @@ public struct ChessGame : Sendable {
         return positions[position]
     }
 
+    public func display() {
+        board.display(with: positions)
+    }
+}
+
+// MARK: Move
+extension ChessGame {
     @inlinable
     public mutating func move(_ move: ChessMove) throws -> ChessMove.Result {
         let thinkDuration:Duration = thinkingDuration
@@ -102,7 +109,7 @@ public struct ChessGame : Sendable {
             throw ChessMoveError.cannotMoveOpponentPiece
         }
         guard thinking.canMove(piece, move: move, for: self) else {
-            throw ChessMoveError.illegal
+            throw ChessMoveError.illegal("\(piece.piece) cannot move from \(move.from) to \(move.to)")
         }
         let captured:ChessPiece.Active? = positions[move.to]
         positions[move.from] = nil
@@ -134,10 +141,6 @@ public struct ChessGame : Sendable {
         calculateCheckStatus()
         return ChessMove.Result(captured: captured, promotion: move.promotion, opponentInCheck: inCheck, opponentWasCheckmated: inCheckmate)
     }
-
-    public func display() {
-        board.display(with: positions)
-    }
 }
 
 // MARK: LogEntry
@@ -157,12 +160,7 @@ extension ChessGame {
 
         @inlinable
         public var isEnPassantable : Bool {
-            switch piece {
-            case .pawn:
-                return player == .white ? move.distance.ranks == 2 : move.distance.ranks == -2
-            default:
-                return false
-            }
+            return piece == .pawn && (player == .white ? move.distance.ranks == 2 : move.distance.ranks == -2)
         }
     }
 }

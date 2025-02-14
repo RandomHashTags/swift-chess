@@ -26,13 +26,13 @@ public struct ChessPosition : CustomStringConvertible, Hashable, Sendable {
 
     public init?<S: StringProtocol>(algebraicNotation: S) {
         guard algebraicNotation.count == 2,
-            let file:UInt8 = algebraicNotation[algebraicNotation.startIndex].asciiValue,
-            let rank:UInt8 = algebraicNotation[algebraicNotation.index(after: algebraicNotation.startIndex)].asciiValue
+            let file:UInt8 = algebraicNotation[algebraicNotation.startIndex].lowercased().first?.asciiValue,
+            let rank:UInt8 = algebraicNotation[algebraicNotation.index(after: algebraicNotation.startIndex)].lowercased().first?.asciiValue
         else {
             return nil
         }
         self.file = Int(file) - 97
-        self.rank = Int(rank) - 48
+        self.rank = Int(rank) - 49
     }
 
     @inlinable
@@ -42,7 +42,7 @@ public struct ChessPosition : CustomStringConvertible, Hashable, Sendable {
 
     @inlinable
     public var description : String {
-        return fileAlgebraicNotation + "\(rank)"
+        return fileAlgebraicNotation + "\(rank+1)"
     }
 
     @inlinable

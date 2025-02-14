@@ -19,7 +19,7 @@ try ask(
             print("What is your first move?")
         },
         "b" : {
-            try move(from: ChessPosition(file: 0, rank: 7), to: ChessPosition(file: 0, rank: 5))
+            try move(from: ChessPosition(file: 4, rank: 1), to: ChessPosition(file: 4, rank: 3))
         }
     ]
 )
@@ -71,6 +71,6 @@ func move(_ move: ChessMove) throws {
         let result:ChessMove.Result = try game.move(move)
         print("\(thinking) move: \(move)")
     } catch {
-        print("\(error)")
+        print("ERROR: \(error)")
     }
 }
