@@ -13,11 +13,11 @@ import Testing
 struct AttackMacroTests {
     @Test func pawnAttackMacro() {
         var expected:UInt64 = 327680
-        var attacks:UInt64 = #chessAttack(piece: .pawn(.white), file: .b, rank: ._2)
+        var attacks:UInt64 = #chessAttack(piece: .pawn, file: .b, rank: ._2)
         #expect(attacks == expected, bitMapComment(expected: expected, actual: attacks))
 
         expected = 5
-        attacks = #chessAttack(piece: .pawn(.black), file: .b, rank: ._2)
+        attacks = #chessAttack(player: .black, piece: .pawn, file: .b, rank: ._2)
         #expect(attacks == expected, bitMapComment(expected: expected, actual: attacks))
     }
 

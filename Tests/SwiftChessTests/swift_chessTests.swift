@@ -41,7 +41,7 @@ struct SwiftChessTests {
     @Test func pawnFirstMoves() {
         // white
         var player:ChessPlayer = .white
-        var piece:ChessPiece.Active = ChessPiece.Active(piece: .pawn(.white), owner: .white, firstMove: true)
+        var piece:ChessPiece.Active = ChessPiece.Active(piece: .pawn, owner: .white, firstMove: true)
         var from:ChessPosition = ChessPosition(file: 0, rank: 1)
         var to:ChessPosition = ChessPosition(file: 0, rank: 3)
         #expect(player.canMove(piece, from: from, to: to, for: game))

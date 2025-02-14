@@ -6,7 +6,7 @@
 //
 
 public enum ChessPiece : Hashable, Equatable, Sendable {
-    case pawn(ChessPlayer)
+    case pawn
 
     case bishop
     case rook

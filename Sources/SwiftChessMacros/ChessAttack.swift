@@ -11,19 +11,24 @@ import SwiftSyntaxMacros
 
 enum ChessAttack : ExpressionMacro {
     static func expansion(of node: some FreestandingMacroExpansionSyntax, in context: some MacroExpansionContext) throws -> ExprSyntax {
-        let firstTwo = node.arguments.dropLast(1)
-        let piece:String
-        let white:Bool
-        if let string:String = firstTwo.first!.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text {
-            piece = string
-            white = true
-        } else {
-            let function:FunctionCallExprSyntax = firstTwo.first!.expression.as(FunctionCallExprSyntax.self)!
-            piece = function.calledExpression.as(MemberAccessExprSyntax.self)!.declName.baseName.text
-            white = function.arguments.first!.expression.as(MemberAccessExprSyntax.self)!.declName.baseName.text == "white"
+        var piece:String = "pawn"
+        var white:Bool = true
+        var file:String = "0"
+        var rank:String = "0"
+        for argument in node.arguments {
+            switch argument.label?.text {
+            case "player":
+                white = argument.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text == "white"
+            case "piece":
+                piece = argument.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text ?? "pawn"
+            case "file":
+                file = argument.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text ?? "0"
+            case "rank":
+                rank = argument.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text ?? "0"
+            default:
+                break
+            }
         }
-        let file:String = firstTwo.last!.expression.as(MemberAccessExprSyntax.self)!.declName.baseName.text
-        let rank:String = node.arguments.last!.expression.as(MemberAccessExprSyntax.self)!.declName.baseName.text
         let value:UInt64 = get(piece: piece, white: white, file: file, rank: rank)
         return "UInt64(\(raw: value))"
     }

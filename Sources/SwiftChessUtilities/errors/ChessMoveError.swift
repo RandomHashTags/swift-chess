@@ -7,4 +7,7 @@
 
 public enum ChessMoveError : Error {
     case illegal
+    case pieceNotFoundForPosition(ChessPosition)
+    case cannotMoveOpponentPiece
+    case unrecognized(any StringProtocol)
 }

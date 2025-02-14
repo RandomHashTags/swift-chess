@@ -24,32 +24,23 @@ public struct ChessBoard : Sendable {
             string += " "
         }
         string += "Black\n"
-        for _ in 0..<filesTimes2 {
-            string += "-"
-        }
-        string += "\n"
         for rank in 0..<ranks {
             string += "|"
             for file in 0..<files {
                 let position:ChessPosition = ChessPosition(file: file, rank: rank)
                 if let active:ChessPiece.Active = positions[position] {
-                    string += active.is(.pawn(.white)) ? "p" : active.piece.symbol
+                    string += active.is(.pawn) ? "p" : active.piece.symbol
                 } else {
                     string += " "
                 }
                 string += "|"
             }
-            string += "\n"
-            /*for _ in 0..<filesTimes2 {
+            string += "\n|"
+            for _ in 0..<filesTimes2-1 {
                 string += "-"
             }
-            string += "\n"*/
+            string += "|\n"
         }
-        string += "\n"
-        for _ in 0..<filesTimes2 {
-            string += "-"
-        }
-        string += "\n"
         for _ in 0..<files/2 {
             string += " "
         }

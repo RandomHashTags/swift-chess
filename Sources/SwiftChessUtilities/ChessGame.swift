@@ -27,11 +27,12 @@ public struct ChessGame : Sendable {
     /// Who's turn it is to make a move.
     public var thinking:ChessPlayer
 
+    public var isActive:Bool
     public var inCheck:Bool
     public var inCheckmate:Bool
 
     public init(
-        chessClock: ChessClock?,
+        chessClock: ChessClock? = nil,
         board: ChessBoard = ChessBoard(),
         player1: ChessPlayer = .white,
         player2: ChessPlayer = .black,
@@ -53,7 +54,7 @@ public struct ChessGame : Sendable {
         thinking = firstMove
         thinkingInstant = clock.now
         var pos:[ChessPosition:ChessPiece.Active] = [:]
-        for piece in [ChessPiece.pawn(.black), .rook, .knight, .bishop, .queen, .king] {
+        for piece in [ChessPiece.pawn, .rook, .knight, .bishop, .queen, .king] {
             let positions1:Set<ChessPosition> = player1.startingPositions(for: piece, at: board)
             for position in positions1 {
                 pos[position] = ChessPiece.Active(piece: piece, owner: player1, firstMove: true)
@@ -65,8 +66,20 @@ public struct ChessGame : Sendable {
         }
         positions = pos
         log = []
+        isActive = false
         inCheck = false
         inCheckmate = false
+    }
+
+    public mutating func start() {
+        guard !isActive else { return }
+        isActive = true
+        thinking = firstMove
+        thinkingInstant = clock.now
+    }
+    public mutating func end() {
+        guard isActive else { return }
+        isActive = false
     }
 
     @inlinable
@@ -82,7 +95,13 @@ public struct ChessGame : Sendable {
     @inlinable
     public mutating func move(_ move: ChessMove) throws -> ChessMove.Result {
         let thinkDuration:Duration = thinkingDuration
-        guard var piece:ChessPiece.Active = piece(at: move.from), piece.owner == thinking, thinking.canMove(piece, move: move, for: self) else {
+        guard var piece:ChessPiece.Active = piece(at: move.from) else {
+            throw ChessMoveError.pieceNotFoundForPosition(move.from)
+        }
+        guard piece.owner == thinking else {
+            throw ChessMoveError.cannotMoveOpponentPiece
+        }
+        guard thinking.canMove(piece, move: move, for: self) else {
             throw ChessMoveError.illegal
         }
         let captured:ChessPiece.Active? = positions[move.to]
@@ -116,7 +135,7 @@ public struct ChessGame : Sendable {
         return ChessMove.Result(captured: captured, promotion: move.promotion, opponentInCheck: inCheck, opponentWasCheckmated: inCheckmate)
     }
 
-    func display() {
+    public func display() {
         board.display(with: positions)
     }
 }
@@ -139,8 +158,8 @@ extension ChessGame {
         @inlinable
         public var isEnPassantable : Bool {
             switch piece {
-            case .pawn(let owner):
-                return owner == .white ? move.distance.ranks == 2 : move.distance.ranks == -2
+            case .pawn:
+                return player == .white ? move.distance.ranks == 2 : move.distance.ranks == -2
             default:
                 return false
             }

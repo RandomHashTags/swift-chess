@@ -5,7 +5,7 @@
 //  Created by Evan Anderson on 1/26/25.
 //
 
-public struct ChessMove : Hashable, Sendable {
+public struct ChessMove : CustomStringConvertible, Hashable, Sendable {
     public let from:ChessPosition
     public let to:ChessPosition
     public let promotion:ChessPiece?
@@ -14,6 +14,22 @@ public struct ChessMove : Hashable, Sendable {
         self.from = from
         self.to = to
         self.promotion = promotion
+    }
+    public init<T: StringProtocol>(from: T, to: T) throws {
+        guard let from:ChessPosition = ChessPosition(algebraicNotation: from) else {
+            throw ChessMoveError.unrecognized(from)
+        }
+        guard let to:ChessPosition = ChessPosition(algebraicNotation: to) else {
+            throw ChessMoveError.unrecognized(to)
+        }
+        self.from = from
+        self.to = to
+        promotion = nil
+    }
+
+    @inlinable
+    public var description : String {
+        return "\(from) -> \(to)"
     }
 
     @inlinable

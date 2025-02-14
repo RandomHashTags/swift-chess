@@ -71,7 +71,7 @@ extension ChessPlayer {
         var canMove:Bool = canMove(piece: piece.piece, firstMove: piece.firstMove, distance: distance)
         if !canMove {
             switch piece.piece {
-            case .pawn(_):
+            case .pawn:
                 let isCapture:Bool = distance == (1, 1) || distance == (1, -1) || distance == (-1, 1) || distance == (-1, -1)
                 if isCapture {
                     if let capturable:ChessPiece.Active = game.positions[to], capturable.owner != game.thinking {

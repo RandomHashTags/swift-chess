@@ -6,17 +6,17 @@ import CompilerPluginSupport
 let package = Package(
     name: "swift-chess",
     products: [
-        .library(
+        /*.library(
             name: "swift-chess",
             targets: ["SwiftChess"]
-        )
+        )*/
     ],
     dependencies: [
         // Macros
         .package(url: "https://github.com/swiftlang/swift-syntax", from: "600.0.1"),
 
         // UI
-        //.package(url: "https://git.aparoksha.dev/aparoksha/adwaita-swift", from: "0.1.0")
+        //.package(url: "https://git.aparoksha.dev/aparoksha/adwaita-swift", branch: "main")
     ],
     targets: [
         .macro(
@@ -44,7 +44,7 @@ let package = Package(
             ]
         ),
 
-        .target(
+        .executableTarget(
             name: "SwiftChess",
             dependencies: [
                 "SwiftChessUtilities"
