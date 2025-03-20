@@ -2,14 +2,12 @@
 //  SwiftChess.swift
 //
 //
-//  Created by Evan Anderson on 1/26/26.
+//  Created by Evan Anderson on 1/26/25.
 //
 
-import Foundation
 import SwiftChessUtilities
 
-var game:ChessGame = ChessGame()
-
+var game = ChessGame()
 game.display()
 
 try ask(
@@ -29,8 +27,8 @@ let gameCommands:[String:(String) throws -> Void] = [
         game.display()
     },
     "move" : { input in
-        let values:[Substring] = input.split(separator: " ")
-        let parsedMove:ChessMove = try ChessMove(from: values[1], to: values[2])
+        let values = input.split(separator: " ")
+        let parsedMove = try ChessMove(from: values[1], to: values[2])
         try move(parsedMove)
     },
     "resign" : { _ in
@@ -38,22 +36,28 @@ let gameCommands:[String:(String) throws -> Void] = [
     }
 ]
 
+let unknownCommandMessage:String = "Unknown command \"\". Allowed commands: \n" + ["display", "move <from> <to>", "resign"].joined(separator: "\n- ")
+
 while !Task.isCancelled {
-    if let input:String = readLine() {
-        let values:[Substring] = input.split(separator: " ")
-        if let cmd:(String) throws -> Void = gameCommands[String(values[0])] {
+    if let input = readLine() {
+        let values = input.split(separator: " ")
+        if let key = values.first, let cmd = gameCommands[String(key)] {
             try cmd(input)
         } else {
-            print("Unknown command")
+            unknownCommand()
         }
     }
+}
+
+func unknownCommand() {
+    print(unknownCommandMessage)
 }
 
 func ask(_ input: String, options: [String:() throws -> Void]) throws {
     let string:String = input + " (" + options.keys.joined(separator: ",") + ")"
     print(string)
-    guard let v:String = readLine() else { return }
-    if let logic:() throws -> Void = options[v] {
+    guard let v = readLine() else { return }
+    if let logic = options[v] {
         try logic()
     }
 }
@@ -67,8 +71,8 @@ func move(
 
 func move(_ move: ChessMove) throws {
     do {
-        let thinking:ChessPlayer = game.thinking
-        let result:ChessMove.Result = try game.move(move)
+        let thinking = game.thinking
+        let result = try game.move(move)
         print("\(thinking) move: \(move)")
     } catch {
         print("ERROR: \(error)")
