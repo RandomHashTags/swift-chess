@@ -184,7 +184,11 @@ extension ChessPlayer {
         }
     }
     
-    public func canMoveHorizontally(from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
+    public func canMoveHorizontally(
+        from: ChessPosition,
+        distance: (files: Int, ranks: Int),
+        game: ChessGame
+    ) -> Bool {
         let doesCapture = doesCapture(from: from, distance: distance, game: game) // TODO: fix
         let increment = distance.files > 0 ? -1 : 1
         for i in stride(from: distance.files + (doesCapture ? increment : 0), to: from.file, by: increment) {
@@ -195,7 +199,11 @@ extension ChessPlayer {
         return true
     }
 
-    public func canMoveVertically(from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
+    public func canMoveVertically(
+        from: ChessPosition,
+        distance: (files: Int, ranks: Int),
+        game: ChessGame
+    ) -> Bool {
         let doesCapture = doesCapture(from: from, distance: distance, game: game) // TODO: fix
         let increment = distance.ranks > 0 ? -1 : 1
         for i in stride(from: distance.ranks + (doesCapture ? increment : 0), to: from.rank, by: increment) {
@@ -206,7 +214,11 @@ extension ChessPlayer {
         return true
     }
 
-    public func canMoveDiagonally(from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
+    public func canMoveDiagonally(
+        from: ChessPosition,
+        distance: (files: Int, ranks: Int),
+        game: ChessGame
+    ) -> Bool {
         let doesCapture = doesCapture(from: from, distance: distance, game: game) // TODO: fix
         let increment = distance.files > 0 ? 1 : -1
         for i in stride(from: distance.files + (doesCapture ? increment : 0), to: from.file, by: increment) {
@@ -217,7 +229,11 @@ extension ChessPlayer {
         return true
     }
 
-    public func doesCapture(from: ChessPosition, distance: (files: Int, ranks: Int), game: ChessGame) -> Bool {
+    public func doesCapture(
+        from: ChessPosition,
+        distance: (files: Int, ranks: Int),
+        game: ChessGame
+    ) -> Bool {
         guard let capturable = game.positions[from + distance] else { return false }
         return capturable.owner != game.thinking
     }

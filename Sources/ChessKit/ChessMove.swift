@@ -4,12 +4,17 @@ public struct ChessMove: CustomStringConvertible, Hashable, Sendable {
     public let to:ChessPosition
     public let promotion:ChessPiece?
 
-    public init(from: ChessPosition, to: ChessPosition, promotion: ChessPiece? = nil) {
+    public init(
+        from: ChessPosition,
+        to: ChessPosition,
+        promotion: ChessPiece? = nil
+    ) {
         self.from = from
         self.to = to
         self.promotion = promotion
     }
-    public init<T: StringProtocol>(from: T, to: T) throws {
+
+    public init(from: some StringProtocol, to: some StringProtocol) throws {
         guard let from = ChessPosition(algebraicNotation: from) else {
             throw ChessMoveError.unrecognized(from)
         }
@@ -38,7 +43,12 @@ extension ChessMove {
         public let opponentInCheck:Bool
         public let opponentWasCheckmated:Bool
 
-        public init(captured: ChessPiece.Active?, promotion: ChessPiece?, opponentInCheck: Bool, opponentWasCheckmated: Bool) {
+        public init(
+            captured: ChessPiece.Active?,
+            promotion: ChessPiece?,
+            opponentInCheck: Bool,
+            opponentWasCheckmated: Bool
+        ) {
             self.captured = captured
             self.promotion = promotion
             self.opponentInCheck = opponentInCheck
@@ -59,7 +69,7 @@ extension ChessMove {
         case interesting
         case mistake
 
-            public var symbol: String {
+        public var symbol: String {
             switch self {
             case .blunder: return "??"
             case .check: return "+"

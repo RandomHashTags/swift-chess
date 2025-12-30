@@ -6,7 +6,10 @@ public struct ChessBoard: Sendable {
     /// Vertical
     public let ranks:Int
 
-    public init(files: Int = 8, ranks: Int = 8) {
+    public init(
+        files: Int = 8,
+        ranks: Int = 8
+    ) {
         self.files = files
         self.ranks = ranks
     }
@@ -15,17 +18,17 @@ public struct ChessBoard: Sendable {
 // MARK: Display
 extension ChessBoard {
     public func display(with positions: [ChessPosition:ChessPiece.Active]) {
-        let filesTimes2:Int = files*2
-        var string:String = ""
+        let filesTimes2 = files*2
+        var string = ""
         for _ in 0..<files/2 {
             string += " "
         }
         string += "Black\n"
         for rank in stride(from: ranks-1, through: 0, by: -1) {
             string += "|"
-            var slice:String = ""
+            var slice = ""
             for file in stride(from: files-1, through: 0, by: -1) {
-                let position:ChessPosition = ChessPosition(file: file, rank: rank)
+                let position = ChessPosition(file: file, rank: rank)
                 if let active = positions[position] {
                     slice += active.is(.pawn) ? "p" : active.piece.symbol
                 } else {

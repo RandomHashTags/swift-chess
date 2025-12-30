@@ -28,8 +28,8 @@ struct SwiftChessTests {
     }
 
     @Test func positionDistance() {
-        var one:ChessPosition = ChessPosition(file: 4, rank: 0)
-        var two:ChessPosition = ChessPosition(file: 4, rank: 3)
+        var one = ChessPosition(file: 4, rank: 0)
+        var two = ChessPosition(file: 4, rank: 3)
         var distance:(Int, Int) = one.distance(to: two)
         #expect(distance == (0, 3))
 
@@ -40,10 +40,10 @@ struct SwiftChessTests {
 
     @Test func pawnFirstMoves() {
         // white
-        var player:ChessPlayer = .white
-        var piece ChessPiece.Active(piece: .pawn, owner: .white, firstMove: true)
-        var from:ChessPosition = ChessPosition(file: 0, rank: 1)
-        var to:ChessPosition = ChessPosition(file: 0, rank: 3)
+        var player = ChessPlayer.white
+        var piece = ChessPiece.Active(piece: .pawn, owner: .white, firstMove: true)
+        var from = ChessPosition(file: 0, rank: 1)
+        var to = ChessPosition(file: 0, rank: 3)
         #expect(player.canMove(piece, from: from, to: to, for: game))
 
         piece.firstMove = false
@@ -70,10 +70,10 @@ struct SwiftChessTests {
     @Test func bishopMoves() {
         // white
         var game:ChessGame = game
-        var player:ChessPlayer = .white
-        var piece ChessPiece.Active(piece: .bishop, owner: .white, firstMove: true)
-        var from:ChessPosition = ChessPosition(file: 2, rank: 0)
-        var to:ChessPosition = ChessPosition(file: 3, rank: 1)
+        var player = ChessPlayer.white
+        var piece = ChessPiece.Active(piece: .bishop, owner: .white, firstMove: true)
+        var from = ChessPosition(file: 2, rank: 0)
+        var to = ChessPosition(file: 3, rank: 1)
         #expect(!player.canMove(piece, from: from, to: to, for: game))
 
         game.positions[ChessPosition(file: 3, rank: 1)] = nil
@@ -83,10 +83,10 @@ struct SwiftChessTests {
     @Test func rookMoves() {
         // white
         var game:ChessGame = game
-        var player:ChessPlayer = .white
-        var piece ChessPiece.Active(piece: .rook, owner: .white, firstMove: true)
-        var from:ChessPosition = ChessPosition(file: 0, rank: 0)
-        var to:ChessPosition = ChessPosition(file: 0, rank: 3)
+        var player = ChessPlayer.white
+        var piece = ChessPiece.Active(piece: .rook, owner: .white, firstMove: true)
+        var from = ChessPosition(file: 0, rank: 0)
+        var to = ChessPosition(file: 0, rank: 3)
         #expect(!player.canMove(piece, from: from, to: to, for: game))
 
         game.positions[ChessPosition(file: 0, rank: 1)] = nil

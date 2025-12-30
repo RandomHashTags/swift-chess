@@ -4,7 +4,7 @@ public struct ChessGame: Sendable {
     public let chessClock:ChessClock?
     public let board:ChessBoard
     //public internal(set) var bitBoards:BitBoards
-    public var move:Int = 1
+    public var move = 1
 
     public var thinkingInstant:ContinuousClock.Instant
     public var player1RemainingThinkDuration:ContinuousClock.Duration
@@ -21,9 +21,7 @@ public struct ChessGame: Sendable {
     /// Who's turn it is to make a move.
     public var thinking:ChessPlayer
 
-    public var isActive:Bool
-    public var inCheck:Bool
-    public var inCheckmate:Bool
+    var flags:Flags.RawValue
 
     public init(
         chessClock: ChessClock? = nil,
@@ -47,33 +45,31 @@ public struct ChessGame: Sendable {
         self.firstMove = firstMove
         thinking = firstMove
         thinkingInstant = clock.now
-        var pos:[ChessPosition:ChessPiece.Active] = [:]
+        var pos = [ChessPosition:ChessPiece.Active]()
         for piece in [ChessPiece.pawn, .rook, .knight, .bishop, .queen, .king] {
-            let positions1:Set<ChessPosition> = player1.startingPositions(for: piece, at: board)
+            let positions1 = player1.startingPositions(for: piece, at: board)
             for position in positions1 {
                 pos[position] = ChessPiece.Active(piece: piece, owner: player1, firstMove: true)
             }
-            let positions2:Set<ChessPosition> = player2.startingPositions(for: piece, at: board)
+            let positions2 = player2.startingPositions(for: piece, at: board)
             for position in positions2 {
                 pos[position] = ChessPiece.Active(piece: piece, owner: player2, firstMove: true)
             }
         }
         positions = pos
         log = []
-        isActive = false
-        inCheck = false
-        inCheckmate = false
+        flags = 0
     }
 
     public mutating func start() {
         guard !isActive else { return }
-        isActive = true
+        setFlag(.active, value: true)
         thinking = firstMove
         thinkingInstant = clock.now
     }
     public mutating func end() {
         guard isActive else { return }
-        isActive = false
+        setFlag(.active, value: false)
     }
 
     public var thinkingDuration: Duration {
@@ -86,6 +82,36 @@ public struct ChessGame: Sendable {
 
     public func display() {
         board.display(with: positions)
+    }
+}
+
+// MARK: Flags
+extension ChessGame {
+    enum Flags: UInt8, Sendable {
+        case active
+        case inCheck
+        case inCheckmate
+    }
+
+    private func isFlag(_ flag: Flags) -> Bool {
+        flags & flag.rawValue > 0
+    }
+    private mutating func setFlag(_ flag: Flags, value: Bool) {
+        if value {
+            flags |= flag.rawValue
+        } else {
+            flags &= ~flag.rawValue
+        }
+    }
+
+    public var isActive: Bool {
+        isFlag(.active)
+    }
+    public var inCheck: Bool {
+        isFlag(.inCheck)
+    }
+    public var inCheckmate: Bool {
+        isFlag(.inCheckmate)
     }
 }
 
@@ -149,7 +175,7 @@ extension ChessGame {
             self.move = move
         }
 
-            public var isEnPassantable: Bool {
+        public var isEnPassantable: Bool {
             return piece == .pawn && (player == .white ? move.distance.ranks == 2 : move.distance.ranks == -2)
         }
     }
@@ -185,7 +211,7 @@ extension ChessGame {
                 }
                 pos = kingPos
                 
-                var i:Int = 1
+                var i = 1
                 var ignoreRightFile = false
                 var ignoreLeftFile = false
                 var ignoreRightDiagonal = false
@@ -293,7 +319,7 @@ extension ChessGame {
                 break
             }
         }
-        inCheck = false
+        setFlag(.inCheck, value: false)
     }
 }
 
@@ -301,15 +327,15 @@ extension ChessGame {
 extension ChessGame {
     /// Thinking player is in check; calculate if it is checkmate
     mutating func calculateCheckmateStatus(kingPos: ChessPosition) { // TODO: finish
-        inCheck = true
-        inCheckmate = false
+        setFlag(.inCheck, value: true)
+        setFlag(.inCheckmate, value: false)
     }
 }
 
 // MARK: Bit Boards
 extension ChessGame {
     public struct BitBoards: Sendable {
-        public internal(set) var populatedSquares:UInt64 = #chessBitMap(.newGame)
+        public internal(set) var populatedSquares = #chessBitMap(.newGame)
         public internal(set) var playerBlack:Player
         public internal(set) var playerWhite:Player
 
@@ -321,7 +347,7 @@ extension ChessGame {
             playerWhite = Player()
         }
 
-            public func inCheck(turn: ChessPlayer) -> Bool {
+        public func inCheck(turn: ChessPlayer) -> Bool {
             let defending:Player, attacking:Player
             switch turn {
             case .black:
@@ -376,7 +402,7 @@ extension ChessGame.BitBoards {
             king = 0
         }
 
-            public func defenders(for squares: UInt64) -> UInt64 {
+        public func defenders(for squares: UInt64) -> UInt64 {
             var value:UInt64 = 0
             let d:UInt64 = defending & squares
             return value

@@ -19,7 +19,7 @@ public enum ChessFile {
     case notG
     case notH
 
-    package init?<T: BinaryInteger>(_ file: T) {
+    package init?(_ file: some BinaryInteger) {
         switch file {
         case 0: self = .a
         case 1: self = .b

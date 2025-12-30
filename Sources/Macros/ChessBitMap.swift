@@ -25,30 +25,36 @@ enum ChessBitMap: ExpressionMacro {
             values = text[text.index(text.startIndex, offsetBy: values![0].count+1)...].split(separator: ",")
             var piece = values![0].split(separator: " ")[1]
             piece = piece[piece.index(after: piece.startIndex)...]
-            switch values![1].hasSuffix("true)") {
-            case true: // white
-                switch piece {
-                case "pawn":   return 65280
-                case "rook":   return 129
-                case "knight": return 66
-                case "bishop": return 36
-                case "queen":  return 8
-                case "king":   return 16
-                default:       return 0
-                }
-            case false: // black
-                switch piece {
-                case "pawn": return 71776119061217280
-                case "rook": return 9295429630892703744
-                case "knight": return 4755801206503243776
-                case "bishop": return 2594073385365405696
-                case "queen": return 1152921504606846976
-                case "king": return 576460752303423488
-                default: return 0
-                }
-            }
+            return startingPositions(for: piece, forWhite: values![1].hasSuffix("true)"))
         default:
             return 0
+        }
+    }
+
+    static func startingPositions(
+        for piece: some StringProtocol,
+        forWhite: Bool
+    ) -> UInt64 {
+        if forWhite {
+            switch piece {
+            case "pawn":   return 65280
+            case "rook":   return 129
+            case "knight": return 66
+            case "bishop": return 36
+            case "queen":  return 8
+            case "king":   return 16
+            default:       return 0
+            }
+        }
+        // black
+        switch piece {
+        case "pawn": return 71776119061217280
+        case "rook": return 9295429630892703744
+        case "knight": return 4755801206503243776
+        case "bishop": return 2594073385365405696
+        case "queen": return 1152921504606846976
+        case "king": return 576460752303423488
+        default: return 0
         }
     }
 }
