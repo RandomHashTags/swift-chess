@@ -18,24 +18,30 @@ extension BitBoard {
             }
             piecesBitMap = bm
         }
+    }
+}
 
-        mutating func move(from: BitMap, to: BitMap) {
-            for i in pieces.indices {
-                if pieces[i].position == from {
-                    pieces[i].move(to: to)
-                    piecesBitMap = (piecesBitMap & ~from) | to
-                    break
-                }
+// MARK: Move
+extension BitBoard.Player {
+    mutating func move(from: BitMap, to: BitMap) {
+        for i in pieces.indices {
+            if pieces[i].position == from {
+                pieces[i].move(to: to)
+                piecesBitMap = (piecesBitMap & ~from) | to
+                break
             }
         }
+    }
+}
 
-        mutating func remove(at position: BitMap) {
-            piecesBitMap &= ~position
-            for i in pieces.indices {
-                if pieces[i].position == position {
-                    pieces[i].removed = true
-                    break
-                }
+// MARK: Remove
+extension BitBoard.Player {
+    mutating func remove(at position: BitMap) {
+        piecesBitMap &= ~position
+        for i in pieces.indices {
+            if pieces[i].position == position {
+                pieces[i].removed = true
+                break
             }
         }
     }

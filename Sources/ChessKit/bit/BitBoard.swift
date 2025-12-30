@@ -58,17 +58,29 @@ extension BitBoard {
 
 // MARK: Move
 extension BitBoard {
-    mutating func blackMove(from: BitMap, to: BitMap) {
+    /// - Warning: Does not check if the move is legal!
+    mutating func blackMove(
+        from: BitMap,
+        to: BitMap
+    ) {
         black.move(from: from, to: to)
         if white.piecesBitMap & to > 0 {
+            // black took a white piece
             white.remove(at: to)
         }
+        empty = (empty & ~to) | from
     }
 
-    mutating func whiteMove(from: BitMap, to: BitMap) {
+    /// - Warning: Does not check if the move is legal!
+    mutating func whiteMove(
+        from: BitMap,
+        to: BitMap
+    ) {
         white.move(from: from, to: to)
         if black.piecesBitMap & to > 0 {
+            // white took a black piece
             black.remove(at: to)
         }
+        empty = (empty & ~to) | from
     }
 }
