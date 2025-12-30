@@ -3,16 +3,16 @@ import SwiftDiagnostics
 import SwiftSyntax
 import SwiftSyntaxMacros
 
-enum ChessBitMap : ExpressionMacro {
+enum ChessBitMap: ExpressionMacro {
     static func expansion(of node: some FreestandingMacroExpansionSyntax, in context: some MacroExpansionContext) throws -> ExprSyntax {
-        let text:String? = node.arguments.last?.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text
+        let text = node.arguments.last?.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text
                             ?? node.arguments.last?.expression.as(FunctionCallExprSyntax.self)?.description
-        let value:UInt64 = get(text: text)
+        let value = get(text: text)
         return "UInt64(\(raw: value))"
     }
 
     static func get(text: String?) -> UInt64 {
-        var values:[Substring]? = text?.split(separator: "(")
+        var values = text?.split(separator: "(")
         switch values?[0] {
         case "empty":
             return 0
@@ -21,9 +21,9 @@ enum ChessBitMap : ExpressionMacro {
         case "universal":
             return UInt64.max
         case ".startingPositions":
-            let text:String = text!
+            let text = text!
             values = text[text.index(text.startIndex, offsetBy: values![0].count+1)...].split(separator: ",")
-            var piece:Substring = values![0].split(separator: " ")[1]
+            var piece = values![0].split(separator: " ")[1]
             piece = piece[piece.index(after: piece.startIndex)...]
             switch values![1].hasSuffix("true)") {
             case true: // white

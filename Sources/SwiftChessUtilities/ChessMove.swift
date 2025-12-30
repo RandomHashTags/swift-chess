@@ -1,5 +1,5 @@
 
-public struct ChessMove : CustomStringConvertible, Hashable, Sendable {
+public struct ChessMove: CustomStringConvertible, Hashable, Sendable {
     public let from:ChessPosition
     public let to:ChessPosition
     public let promotion:ChessPiece?
@@ -10,10 +10,10 @@ public struct ChessMove : CustomStringConvertible, Hashable, Sendable {
         self.promotion = promotion
     }
     public init<T: StringProtocol>(from: T, to: T) throws {
-        guard let from:ChessPosition = ChessPosition(algebraicNotation: from) else {
+        guard let from = ChessPosition(algebraicNotation: from) else {
             throw ChessMoveError.unrecognized(from)
         }
-        guard let to:ChessPosition = ChessPosition(algebraicNotation: to) else {
+        guard let to = ChessPosition(algebraicNotation: to) else {
             throw ChessMoveError.unrecognized(to)
         }
         self.from = from
@@ -21,20 +21,18 @@ public struct ChessMove : CustomStringConvertible, Hashable, Sendable {
         promotion = nil
     }
 
-    @inlinable
-    public var description : String {
+    public var description: String {
         return "\(from) -> \(to)"
     }
 
-    @inlinable
-    public var distance : (files: Int, ranks: Int) {
+    public var distance: (files: Int, ranks: Int) {
         return from.distance(to: to)
     }
 }
 
 // MARK: Result
 extension ChessMove {
-    public struct Result : Sendable {
+    public struct Result: Sendable {
         public let captured:ChessPiece.Active?
         public let promotion:ChessPiece?
         public let opponentInCheck:Bool
@@ -51,7 +49,7 @@ extension ChessMove {
 
 // MARK: Annotation
 extension ChessMove {
-    public enum Annotation : Sendable{
+    public enum Annotation: Sendable{
         case blunder
         case check
         case checkmate
@@ -61,8 +59,7 @@ extension ChessMove {
         case interesting
         case mistake
 
-        @inlinable
-        public var symbol : String {
+            public var symbol: String {
             switch self {
             case .blunder: return "??"
             case .check: return "+"

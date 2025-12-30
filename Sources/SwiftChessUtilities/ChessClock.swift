@@ -1,5 +1,5 @@
 
-public struct ChessClock : Sendable {
+public struct ChessClock: Sendable {
     public let duration:ContinuousClock.Duration
     public let increment:@Sendable (Int) -> Duration?
 

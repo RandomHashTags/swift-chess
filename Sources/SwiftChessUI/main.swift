@@ -4,27 +4,27 @@ import Adwaita
 import SwiftChessUtilities
 
 @main
-struct SwiftChessUI : App {
+struct SwiftChessUI: App {
 
     var app:AdwaitaApp = AdwaitaApp(id: "me.randomhashtags.Chess")
 
-    var scene : Scene {
+    var scene: Scene {
         Window(id: "main") {
             Content(window: $0, app: app)
         }.defaultSize(width: 1280, height: 720)
     }
 }
 
-struct Content : WindowView {
-    @State private var sidebarVisible:Bool = true
+struct Content: WindowView {
+    @State private var sidebarVisible = true
     @State private var width:Int = 1280
     @State private var height:Int = 720
-    @State private var maximized:Bool = false
+    @State private var maximized = false
 
     var window:AdwaitaWindow
     var app:AdwaitaApp
     
-    var view : Body {
+    var view: Body {
         OverlaySplitView(visible: $sidebarVisible) {
             ScrollView {
             }
@@ -44,7 +44,7 @@ struct Content : WindowView {
         }
     }
 
-    var menu : AnyView {
+    var menu: AnyView {
         Menu(icon: .default(icon: .openMenu)) {
             MenuButton("New Window", window: false) {
                 app.addWindow("main")
@@ -61,8 +61,8 @@ struct Content : WindowView {
 }
 
 extension ChessBoard {
-    struct View : AnyView {
-        var viewContent : Body {
+    struct View: AnyView {
+        var viewContent: Body {
             HStack {
                 ForEach([0,1,2,3,4,5,6,7], horizontal: true) { file in
                     VStack {

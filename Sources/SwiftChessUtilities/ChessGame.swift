@@ -1,5 +1,5 @@
 
-public struct ChessGame : Sendable {
+public struct ChessGame: Sendable {
     public let clock:ContinuousClock
     public let chessClock:ChessClock?
     public let board:ChessBoard
@@ -76,12 +76,10 @@ public struct ChessGame : Sendable {
         isActive = false
     }
 
-    @inlinable
-    public var thinkingDuration : Duration {
+    public var thinkingDuration: Duration {
         return thinkingInstant - clock.now
     }
 
-    @inlinable
     public func piece(at position: ChessPosition) -> ChessPiece.Active? {
         return positions[position]
     }
@@ -93,10 +91,9 @@ public struct ChessGame : Sendable {
 
 // MARK: Move
 extension ChessGame {
-    @inlinable
     public mutating func move(_ move: ChessMove) throws -> ChessMove.Result {
-        let thinkDuration:Duration = thinkingDuration
-        guard var piece:ChessPiece.Active = piece(at: move.from) else {
+        let thinkDuration = thinkingDuration
+        guard var piece = piece(at: move.from) else {
             throw ChessMoveError.pieceNotFoundForPosition(move.from)
         }
         guard piece.owner == thinking else {
@@ -105,7 +102,7 @@ extension ChessGame {
         guard thinking.canMove(piece, move: move, for: self) else {
             throw ChessMoveError.illegal("\(piece.piece) cannot move from \(move.from) to \(move.to)")
         }
-        let captured:ChessPiece.Active? = positions[move.to]
+        let captured = positions[move.to]
         positions[move.from] = nil
         piece.firstMove = false
         positions[move.to] = piece
@@ -114,7 +111,7 @@ extension ChessGame {
         case .black:
             if chessClock != nil {
                 player2RemainingThinkDuration -= thinkDuration
-                if let increment:ContinuousClock.Duration = chessClock?.increment(self.move) {
+                if let increment = chessClock?.increment(self.move) {
                     player2RemainingThinkDuration += increment
                 }
             }
@@ -122,7 +119,7 @@ extension ChessGame {
         case .white:
             if chessClock != nil {
                 player1RemainingThinkDuration -= thinkDuration
-                if let increment:ContinuousClock.Duration = chessClock?.increment(self.move) {
+                if let increment = chessClock?.increment(self.move) {
                     player1RemainingThinkDuration += increment
                 }
             }
@@ -139,7 +136,7 @@ extension ChessGame {
 
 // MARK: LogEntry
 extension ChessGame {
-    public struct LogEntry : Sendable {
+    public struct LogEntry: Sendable {
         public let thinkDuration:Duration
         public let player:ChessPlayer
         public let piece:ChessPiece
@@ -152,8 +149,7 @@ extension ChessGame {
             self.move = move
         }
 
-        @inlinable
-        public var isEnPassantable : Bool {
+            public var isEnPassantable: Bool {
             return piece == .pawn && (player == .white ? move.distance.ranks == 2 : move.distance.ranks == -2)
         }
     }
@@ -165,10 +161,10 @@ extension ChessGame {
     mutating func calculateCheckStatus() {
         for (kingPos, piece) in positions {
             if piece.piece == .king && piece.owner == thinking {
-                var pos:ChessPosition = kingPos
+                var pos = kingPos
                 sameFile: for i in 1..<board.ranks {
                     pos.rank = kingPos.rank + i
-                    if let threat:ChessPiece.Active = positions[pos] {
+                    if let threat = positions[pos] {
                         if threat.owner != thinking && (threat.is(.rook) || threat.is(.queen)) {
                             calculateCheckmateStatus(kingPos: kingPos)
                             return
@@ -178,7 +174,7 @@ extension ChessGame {
                     }
 
                     pos.rank = kingPos.rank - i
-                    if let threat:ChessPiece.Active = positions[pos] {
+                    if let threat = positions[pos] {
                         if threat.owner != thinking && (threat.is(.rook) || threat.is(.queen)) {
                             calculateCheckmateStatus(kingPos: kingPos)
                             return
@@ -190,15 +186,15 @@ extension ChessGame {
                 pos = kingPos
                 
                 var i:Int = 1
-                var ignoreRightFile:Bool = false
-                var ignoreLeftFile:Bool = false
-                var ignoreRightDiagonal:Bool = false
-                var ignoreLeftDiagonal:Bool = false
+                var ignoreRightFile = false
+                var ignoreLeftFile = false
+                var ignoreRightDiagonal = false
+                var ignoreLeftDiagonal = false
                 while i < board.files {
                     if !ignoreRightFile {
                         // check files to the right
                         pos = ChessPosition(file: kingPos.file + i, rank: kingPos.rank)
-                        if let threat:ChessPiece.Active = positions[pos] {
+                        if let threat = positions[pos] {
                             if threat.owner != thinking && (threat.is(.rook) || threat.is(.queen)) {
                                 calculateCheckmateStatus(kingPos: kingPos)
                                 return
@@ -210,7 +206,7 @@ extension ChessGame {
                     if !ignoreLeftFile {
                         // check files to the left
                         pos = ChessPosition(file: kingPos.file - i, rank: kingPos.file)
-                        if let threat:ChessPiece.Active = positions[pos] {
+                        if let threat = positions[pos] {
                             if threat.owner != thinking && (threat.is(.rook) || threat.is(.queen)) {
                                 calculateCheckmateStatus(kingPos: kingPos)
                                 return
@@ -222,7 +218,7 @@ extension ChessGame {
                     if !ignoreRightDiagonal {
                         // check diagonal to the right
                         pos = ChessPosition(file: kingPos.file + i, rank: kingPos.rank + i)
-                        if let threat:ChessPiece.Active = positions[pos] {
+                        if let threat = positions[pos] {
                             if threat.owner != thinking && (threat.is(.bishop) || threat.is(.queen)) {
                                 calculateCheckmateStatus(kingPos: kingPos)
                                 return
@@ -232,7 +228,7 @@ extension ChessGame {
                         }
 
                         pos.rank = kingPos.rank - i
-                        if let threat:ChessPiece.Active = positions[pos] {
+                        if let threat = positions[pos] {
                             if threat.owner != thinking && (threat.is(.bishop) || threat.is(.queen)) {
                                 calculateCheckmateStatus(kingPos: kingPos)
                                 return
@@ -244,7 +240,7 @@ extension ChessGame {
                     if !ignoreLeftDiagonal {
                         // check diagonal to the left
                         pos = ChessPosition(file: kingPos.file - i, rank: kingPos.rank + i)
-                        if let threat:ChessPiece.Active = positions[pos] {
+                        if let threat = positions[pos] {
                             if threat.owner != thinking && (threat.is(.bishop) || threat.is(.queen)) {
                                 calculateCheckmateStatus(kingPos: kingPos)
                                 return
@@ -254,7 +250,7 @@ extension ChessGame {
                         }
 
                         pos.rank = kingPos.rank - i
-                        if let threat:ChessPiece.Active = positions[pos] {
+                        if let threat = positions[pos] {
                             if threat.owner != thinking && (threat.is(.bishop) || threat.is(.queen)) {
                                 calculateCheckmateStatus(kingPos: kingPos)
                                 return
@@ -271,23 +267,23 @@ extension ChessGame {
                             increment = 2
                         }
                         pos = ChessPosition(file: kingPos.file + i, rank: kingPos.rank + increment)
-                        if let threat:ChessPiece.Active = positions[pos], threat.owner != thinking && threat.is(.knight) {
+                        if let threat = positions[pos], threat.owner != thinking && threat.is(.knight) {
                             calculateCheckmateStatus(kingPos: kingPos)
                             return
                         }
                         pos.rank = kingPos.rank - increment
-                        if let threat:ChessPiece.Active = positions[pos], threat.owner != thinking && threat.is(.knight) {
+                        if let threat = positions[pos], threat.owner != thinking && threat.is(.knight) {
                             calculateCheckmateStatus(kingPos: kingPos)
                             return
                         }
 
                         pos = ChessPosition(file: kingPos.file - i, rank: kingPos.rank + increment)
-                        if let threat:ChessPiece.Active = positions[pos], threat.owner != thinking && threat.is(.knight) {
+                        if let threat = positions[pos], threat.owner != thinking && threat.is(.knight) {
                             calculateCheckmateStatus(kingPos: kingPos)
                             return
                         }
                         pos.rank = kingPos.rank - increment
-                        if let threat:ChessPiece.Active = positions[pos], threat.owner != thinking && threat.is(.knight) {
+                        if let threat = positions[pos], threat.owner != thinking && threat.is(.knight) {
                             calculateCheckmateStatus(kingPos: kingPos)
                             return
                         }
@@ -312,7 +308,7 @@ extension ChessGame {
 
 // MARK: Bit Boards
 extension ChessGame {
-    public struct BitBoards : Sendable {
+    public struct BitBoards: Sendable {
         public internal(set) var populatedSquares:UInt64 = #chessBitMap(.newGame)
         public internal(set) var playerBlack:Player
         public internal(set) var playerWhite:Player
@@ -325,8 +321,7 @@ extension ChessGame {
             playerWhite = Player()
         }
 
-        @inlinable
-        public func inCheck(turn: ChessPlayer) -> Bool {
+            public func inCheck(turn: ChessPlayer) -> Bool {
             let defending:Player, attacking:Player
             switch turn {
             case .black:
@@ -342,7 +337,7 @@ extension ChessGame {
 }
 
 extension ChessGame.BitBoards {
-    public struct Player : Sendable {
+    public struct Player: Sendable {
         public internal(set) var pieces:UInt64
         public internal(set) var pinnedPieces:UInt64
 
@@ -381,8 +376,7 @@ extension ChessGame.BitBoards {
             king = 0
         }
 
-        @inlinable
-        public func defenders(for squares: UInt64) -> UInt64 {
+            public func defenders(for squares: UInt64) -> UInt64 {
             var value:UInt64 = 0
             let d:UInt64 = defending & squares
             return value

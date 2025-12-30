@@ -3,9 +3,9 @@ import SwiftDiagnostics
 import SwiftSyntax
 import SwiftSyntaxMacros
 
-enum ChessRank : ExpressionMacro {
+enum ChessRank: ExpressionMacro {
     static func expansion(of node: some FreestandingMacroExpansionSyntax, in context: some MacroExpansionContext) throws -> ExprSyntax {
-        let value:UInt64 = get(text: node.arguments.first?.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text)
+        let value = get(text: node.arguments.first?.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text)
         return "UInt64(\(raw: value))"
     }
 

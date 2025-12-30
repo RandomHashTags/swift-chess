@@ -1,5 +1,5 @@
 
-public struct ChessBoard : Sendable {
+public struct ChessBoard: Sendable {
     /// Horizontal
     public let files:Int
 
@@ -26,7 +26,7 @@ extension ChessBoard {
             var slice:String = ""
             for file in stride(from: files-1, through: 0, by: -1) {
                 let position:ChessPosition = ChessPosition(file: file, rank: rank)
-                if let active:ChessPiece.Active = positions[position] {
+                if let active = positions[position] {
                     slice += active.is(.pawn) ? "p" : active.piece.symbol
                 } else {
                     slice += " "

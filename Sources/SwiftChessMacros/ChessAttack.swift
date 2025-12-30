@@ -3,12 +3,12 @@ import SwiftDiagnostics
 import SwiftSyntax
 import SwiftSyntaxMacros
 
-enum ChessAttack : ExpressionMacro {
+enum ChessAttack: ExpressionMacro {
     static func expansion(of node: some FreestandingMacroExpansionSyntax, in context: some MacroExpansionContext) throws -> ExprSyntax {
-        var piece:String = "pawn"
-        var white:Bool = true
-        var file:String = "0"
-        var rank:String = "0"
+        var piece = "pawn"
+        var white = true
+        var file = "0"
+        var rank = "0"
         for argument in node.arguments {
             switch argument.label?.text {
             case "player":
@@ -23,7 +23,7 @@ enum ChessAttack : ExpressionMacro {
                 break
             }
         }
-        let value:UInt64 = get(piece: piece, white: white, file: file, rank: rank)
+        let value = get(piece: piece, white: white, file: file, rank: rank)
         return "UInt64(\(raw: value))"
     }
 
@@ -45,48 +45,48 @@ enum ChessAttack : ExpressionMacro {
 
     // MARK: Pawn
     static func pawn(white: Bool, file: String, rank: String) -> UInt64 {
-        let pos:UInt64 = position(file: file, rank: rank)
+        let pos = position(file: file, rank: rank)
         return white ? pos << 9 | pos << 7 : pos >> 7 | pos >> 9
     }
 
     // MARK: Knight
     static func knight(file: String, rank: String) -> UInt64 {
-        let pos:UInt64 = position(file: file, rank: rank)
-        var value:UInt64 = pos
-        let file:UInt8 = file.first!.asciiValue! - 97
-        let rank:UInt8 = rank.last!.asciiValue! - 49
+        let pos = position(file: file, rank: rank)
+        var value = pos
+        let file = file.first!.asciiValue! - 97
+        let rank = rank.last!.asciiValue! - 49
         if file != 0 { // a
             if rank > 1 {
-                let closeLeftDown:UInt64 = pos >> 17
+                let closeLeftDown = pos >> 17
                 value |= closeLeftDown
                 if file != 1 { // b
-                    let farLeftDown:UInt64 = pos >> 10
+                    let farLeftDown = pos >> 10
                     value |= farLeftDown
                 }
             }
             if rank < 6 {
-                let closeLeftUp:UInt64 = pos << 15
+                let closeLeftUp = pos << 15
                 value |= closeLeftUp
                 if file != 1 { // b
-                    let farLeftUp:UInt64 = pos << 6
+                    let farLeftUp = pos << 6
                     value |= farLeftUp
                 }
             }
         }
         if file != 7 { // h
             if rank > 1 {
-                let closeRightDown:UInt64 = pos >> 15
+                let closeRightDown = pos >> 15
                 value |= closeRightDown
                 if file != 6 { // g
-                    let farRightDown:UInt64 = pos >> 6
+                    let farRightDown = pos >> 6
                     value |= farRightDown
                 }
             }
             if rank < 6 {
-                let closeRightUp:UInt64 = pos << 17
+                let closeRightUp = pos << 17
                 value |= closeRightUp
                 if file != 6 { // g
-                    let farRightUp:UInt64 = pos << 10
+                    let farRightUp = pos << 10
                     value |= farRightUp
                 }
             }
@@ -96,17 +96,17 @@ enum ChessAttack : ExpressionMacro {
 
     // MARK: Bishop
     static func bishop(file: String, rank: String) -> UInt64 {
-        let pos:UInt64 = position(file: file, rank: rank)
-        let posFile:Int8 = Int8(file.first!.asciiValue! - 97)
-        let posRank:Int8 = Int8(rank.last!.asciiValue! - 49)
+        let pos = position(file: file, rank: rank)
+        let posFile = Int8(file.first!.asciiValue! - 97)
+        let posRank = Int8(rank.last!.asciiValue! - 49)
 
-        let left:[Int] = [9, 18, 27, 36, 45, 54, 63]
-        let right:[Int] = [7, 14, 21, 28, 35, 42, 49]
+        let left:[_ of Int] = [9, 18, 27, 36, 45, 54, 63]
+        let right:[_ of Int] = [7, 14, 21, 28, 35, 42, 49]
 
-        var value:UInt64 = pos
+        var value = pos
         // movement: left
-        var freeLeftFiles:Int = Int(posFile)
-        var index:Int = 0
+        var freeLeftFiles = Int(posFile)
+        var index = 0
         while freeLeftFiles > 0 {
             index += 1
             var newFile = posFile - Int8(index)
@@ -124,7 +124,7 @@ enum ChessAttack : ExpressionMacro {
         }
 
         // movement: right
-        var freeRightFiles:Int = 8 - Int(posFile)
+        var freeRightFiles = 8 - Int(posFile)
         index = 0
         while freeRightFiles > 0 {
             index += 1
@@ -146,7 +146,7 @@ enum ChessAttack : ExpressionMacro {
 
     // MARK: Rook
     static func rook(file: String, rank: String) -> UInt64 {
-        let pos:UInt64 = position(file: file, rank: rank)
+        let pos = position(file: file, rank: rank)
         return (ChessFile.get(text: file) | ChessRank.get(text: rank)) & ~pos
     }
 
@@ -157,11 +157,11 @@ enum ChessAttack : ExpressionMacro {
 
     // MARK: King
     static func king(file: String, rank: String) -> UInt64 {
-        let pos:UInt64 = position(file: file, rank: rank)
-        var value:UInt64 = pos
+        let pos = position(file: file, rank: rank)
+        var value = pos
 
-        let notAFile:Bool = pos & ChessFile.get(text: "notA") > 0
-        let notHFile:Bool = pos & ChessFile.get(text: "notH") > 0
+        let notAFile = pos & ChessFile.get(text: "notA") > 0
+        let notHFile = pos & ChessFile.get(text: "notH") > 0
         if notAFile {
             value |= pos >> 1 // middle left
         }

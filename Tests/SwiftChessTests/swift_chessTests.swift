@@ -41,7 +41,7 @@ struct SwiftChessTests {
     @Test func pawnFirstMoves() {
         // white
         var player:ChessPlayer = .white
-        var piece:ChessPiece.Active = ChessPiece.Active(piece: .pawn, owner: .white, firstMove: true)
+        var piece ChessPiece.Active(piece: .pawn, owner: .white, firstMove: true)
         var from:ChessPosition = ChessPosition(file: 0, rank: 1)
         var to:ChessPosition = ChessPosition(file: 0, rank: 3)
         #expect(player.canMove(piece, from: from, to: to, for: game))
@@ -71,7 +71,7 @@ struct SwiftChessTests {
         // white
         var game:ChessGame = game
         var player:ChessPlayer = .white
-        var piece:ChessPiece.Active = ChessPiece.Active(piece: .bishop, owner: .white, firstMove: true)
+        var piece ChessPiece.Active(piece: .bishop, owner: .white, firstMove: true)
         var from:ChessPosition = ChessPosition(file: 2, rank: 0)
         var to:ChessPosition = ChessPosition(file: 3, rank: 1)
         #expect(!player.canMove(piece, from: from, to: to, for: game))
@@ -84,7 +84,7 @@ struct SwiftChessTests {
         // white
         var game:ChessGame = game
         var player:ChessPlayer = .white
-        var piece:ChessPiece.Active = ChessPiece.Active(piece: .rook, owner: .white, firstMove: true)
+        var piece ChessPiece.Active(piece: .rook, owner: .white, firstMove: true)
         var from:ChessPosition = ChessPosition(file: 0, rank: 0)
         var to:ChessPosition = ChessPosition(file: 0, rank: 3)
         #expect(!player.canMove(piece, from: from, to: to, for: game))
@@ -119,7 +119,7 @@ struct SwiftChessTests {
 
 #endif
 
-func binary(_ number : UInt64) -> String {
+func binary(_ number: UInt64) -> String {
     let string:String = String.init(number, radix: 2)
     let padded:String = String(repeating: "0", count: 64 - string.count) + string
     var s:String = ""

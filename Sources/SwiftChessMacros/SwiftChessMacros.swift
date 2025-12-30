@@ -3,7 +3,7 @@ import SwiftCompilerPlugin
 import SwiftSyntaxMacros
 
 @main
-struct SwiftChessMacros : CompilerPlugin {
+struct SwiftChessMacros: CompilerPlugin {
     let providingMacros:[any Macro.Type] = [
         ChessFile.self,
         ChessRank.self,

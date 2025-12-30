@@ -3,10 +3,10 @@ import SwiftDiagnostics
 import SwiftSyntax
 import SwiftSyntaxMacros
 
-enum ChessFile : ExpressionMacro {
+enum ChessFile: ExpressionMacro {
     static func expansion(of node: some FreestandingMacroExpansionSyntax, in context: some MacroExpansionContext) throws -> ExprSyntax {
-        let text:String? = node.arguments.last?.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text
-        let value:UInt64 = get(text: text)
+        let text = node.arguments.last?.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text
+        let value = get(text: text)
         return "UInt64(\(raw: value))"
     }
 

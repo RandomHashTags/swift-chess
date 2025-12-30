@@ -1,5 +1,5 @@
 
-public enum ChessMoveError : Error {
+public enum ChessMoveError: Error {
     case illegal(String)
     case pieceNotFoundForPosition(ChessPosition)
     case cannotMoveOpponentPiece

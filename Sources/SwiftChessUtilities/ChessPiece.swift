@@ -1,5 +1,5 @@
 
-public enum ChessPiece : Hashable, Equatable, Sendable {
+public enum ChessPiece: Hashable, Equatable, Sendable {
     case pawn
 
     case bishop
@@ -10,8 +10,7 @@ public enum ChessPiece : Hashable, Equatable, Sendable {
 
     case king
 
-    @inlinable
-    public var symbol : String {
+    public var symbol: String {
         switch self {
         case .pawn: return ""
         case .bishop: return "B"
@@ -25,12 +24,11 @@ public enum ChessPiece : Hashable, Equatable, Sendable {
 
 // MARK: Active
 extension ChessPiece {
-    public struct Active : Hashable, Sendable {
+    public struct Active: Hashable, Sendable {
         public var piece:ChessPiece
         public var owner:ChessPlayer
         public var firstMove:Bool
 
-        @inlinable
         public func `is`(_ piece: ChessPiece) -> Bool {
             return self.piece == piece
         }

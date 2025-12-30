@@ -7,25 +7,25 @@ game.display()
 try ask(
     "Do you want to play as White or Black?",
     options: [
-        "w" : {
+        "w": {
             print("What is your first move?")
         },
-        "b" : {
+        "b": {
             try move(from: ChessPosition(file: 4, rank: 1), to: ChessPosition(file: 4, rank: 3))
         }
     ]
 )
 
 let gameCommands:[String:(String) throws -> Void] = [
-    "display" : { _ in
+    "display": { _ in
         game.display()
     },
-    "move" : { input in
+    "move": { input in
         let values = input.split(separator: " ")
         let parsedMove = try ChessMove(from: values[1], to: values[2])
         try move(parsedMove)
     },
-    "resign" : { _ in
+    "resign": { _ in
         game.end()
     }
 ]
@@ -56,6 +56,7 @@ func ask(_ input: String, options: [String:() throws -> Void]) throws {
     }
 }
 
+@MainActor
 func move(
     from: ChessPosition,
     to: ChessPosition
@@ -63,6 +64,7 @@ func move(
     try move(ChessMove(from: from, to: to))
 }
 
+@MainActor
 func move(_ move: ChessMove) throws {
     do {
         let thinking = game.thinking
