@@ -1,6 +1,6 @@
 
 public enum PieceType: Sendable {
-    case pawn
+    case pawn(isWhite: Bool)
 
     case bishop
     case rook
