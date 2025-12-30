@@ -121,19 +121,19 @@ extension Game {
     ) throws(MoveError) -> ChessMove.Result {
         let thinkDuration = thinkingDuration
         guard var piece = piece(at: move.from) else {
-            throw MoveError.pieceNotFoundForPosition(move.from)
+            throw .pieceNotFoundForPosition(move.from)
         }
         guard piece.owner == thinking else {
-            throw MoveError.cannotMoveOpponentPiece
+            throw .cannotMoveOpponentPiece
         }
         guard thinking.canMove(piece, move: move, for: self) else {
-            throw MoveError.illegal("\(piece.piece) cannot move from \(move.from) to \(move.to)")
+            throw .illegal("\(piece.piece) cannot move from \(move.from) to \(move.to)")
         }
         let captured = positions[move.to]
         positions[move.from] = nil
         piece.firstMove = false
         positions[move.to] = piece
-        log.append(LogEntry(thinkDuration: thinkDuration, player: thinking, piece: piece.piece, move: move))
+        log.append(.init(thinkDuration: thinkDuration, player: thinking, piece: piece.piece, move: move))
         switch thinking {
         case .black:
             if chessClock != nil {
@@ -157,7 +157,7 @@ extension Game {
         }
         thinkingInstant = clock.now
         calculateCheckStatus()
-        return ChessMove.Result(captured: captured, promotion: move.promotion, opponentInCheck: inCheck, opponentWasCheckmated: inCheckmate)
+        return .init(captured: captured, promotion: move.promotion, opponentInCheck: inCheck, opponentWasCheckmated: inCheckmate)
     }
 }
 

@@ -1,4 +1,6 @@
 
+import ChessUtilities
+
 extension BitBoard {
     struct Player: Sendable {
         var king:BitPiece

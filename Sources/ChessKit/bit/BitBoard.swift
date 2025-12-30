@@ -1,4 +1,6 @@
 
+import ChessUtilities
+
 struct BitBoard: Sendable {
     var empty:BitMap
     var black:Player

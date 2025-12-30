@@ -1,4 +1,6 @@
 
+import ChessUtilities
+
 public struct BitPiece: Sendable {
     public internal(set) var position:BitMap
     public internal(set) var attacking:BitMap
