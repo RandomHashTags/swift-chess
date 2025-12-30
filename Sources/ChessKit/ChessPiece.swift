@@ -26,7 +26,7 @@ public enum ChessPiece: Hashable, Equatable, Sendable {
 extension ChessPiece {
     public struct Active: Hashable, Sendable {
         public var piece:ChessPiece
-        public var owner:ChessPlayer
+        public var owner:PlayerColor
         public var firstMove:Bool
 
         public func `is`(_ piece: ChessPiece) -> Bool {

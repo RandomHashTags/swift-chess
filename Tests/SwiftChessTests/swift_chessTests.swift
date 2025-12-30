@@ -32,7 +32,7 @@ struct SwiftChessTests {
 
     @Test func pawnFirstMoves() {
         // white
-        var player = ChessPlayer.white
+        var player = PlayerColor.white
         var piece = ChessPiece.Active(piece: .pawn, owner: .white, firstMove: true)
         var from = Position(file: 0, rank: 1)
         var to = Position(file: 0, rank: 3)
@@ -62,7 +62,7 @@ struct SwiftChessTests {
     @Test func bishopMoves() {
         // white
         var game:Game = game
-        var player = ChessPlayer.white
+        var player = PlayerColor.white
         var piece = ChessPiece.Active(piece: .bishop, owner: .white, firstMove: true)
         var from = Position(file: 2, rank: 0)
         var to = Position(file: 3, rank: 1)
@@ -75,7 +75,7 @@ struct SwiftChessTests {
     @Test func rookMoves() {
         // white
         var game:Game = game
-        var player = ChessPlayer.white
+        var player = PlayerColor.white
         var piece = ChessPiece.Active(piece: .rook, owner: .white, firstMove: true)
         var from = Position(file: 0, rank: 0)
         var to = Position(file: 0, rank: 3)

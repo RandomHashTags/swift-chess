@@ -3,7 +3,6 @@ public struct Game: Sendable {
     public let clock:ContinuousClock
     public let chessClock:ChessClock?
     public let board:Board
-    //public internal(set) var bitBoards:BitBoards
     public var move = 1
 
     public var thinkingInstant:ContinuousClock.Instant
@@ -13,22 +12,22 @@ public struct Game: Sendable {
 
     public var log:[LogEntry]
 
-    public let player1:ChessPlayer
-    public let player2:ChessPlayer
+    public let player1:PlayerColor
+    public let player2:PlayerColor
     /// Which player got to make the first move.
-    public let firstMove:ChessPlayer
+    public let firstMove:PlayerColor
 
     /// Who's turn it is to make a move.
-    public var thinking:ChessPlayer
+    public var thinking:PlayerColor
 
     var flags:Flags.RawValue
 
     public init(
         chessClock: ChessClock? = nil,
         board: Board = Board(),
-        player1: ChessPlayer = .white,
-        player2: ChessPlayer = .black,
-        firstMove: ChessPlayer = .white
+        player1: PlayerColor = .white,
+        player2: PlayerColor = .black,
+        firstMove: PlayerColor = .white
     ) {
         clock = ContinuousClock()
         self.chessClock = chessClock
@@ -166,13 +165,13 @@ extension Game {
 extension Game {
     public struct LogEntry: Sendable {
         public let thinkDuration:Duration
-        public let player:ChessPlayer
+        public let player:PlayerColor
         public let piece:ChessPiece
         public let move:ChessMove
 
         public init(
             thinkDuration: Duration,
-            player: ChessPlayer,
+            player: PlayerColor,
             piece: ChessPiece,
             move: ChessMove
         ) {

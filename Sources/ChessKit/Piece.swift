@@ -6,7 +6,7 @@ public struct Piece: Sendable {
 
     public init(
         position: BitMap,
-        owner: ChessPlayer,
+        owner: PlayerColor,
         type: PieceType
     ) {
         self.position = position

@@ -1,14 +1,14 @@
 
-public enum ChessPlayer: Hashable, Sendable {
-    /// Player 1
+public enum PlayerColor: Sendable {
+    /// Player 1.
     case white
 
-    /// Player 2
+    /// Player 2.
     case black
 }
 
 // MARK: Starting positions
-extension ChessPlayer {
+extension PlayerColor {
     public func startingPositions(
         for piece: ChessPiece,
         at board: Board
@@ -54,7 +54,7 @@ extension ChessPlayer {
 }
 
 // MARK: Can move
-extension ChessPlayer {
+extension PlayerColor {
     public func canMove(
         _ piece: ChessPiece.Active,
         move: ChessMove,
@@ -148,7 +148,7 @@ extension ChessPlayer {
 }
 
 // MARK: Can travel
-extension ChessPlayer {
+extension PlayerColor {
     public func canTravel(
         _ piece: ChessPiece.Active,
         from: Position,

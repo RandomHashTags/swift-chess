@@ -1,5 +1,5 @@
 
-/// Each bit represents a single square on a board. The least significant bit is A8 and the most significant bit is H1.
+/// Each bit represents a single square on a board. The most significant bit is A8 and the least significant bit is H1.
 /// 
 /// Bit shifting left moves up the board, while bit shifting right moves down.
 public typealias BitMap = UInt64
@@ -153,7 +153,7 @@ extension BitMap {
             }
             freeRightFiles -= 1
         }
-        return attacking & ~position
+        return attacking
     }
 }
 
@@ -282,6 +282,6 @@ extension BitMap {
                 attacking |= position >> 7 // right
             }
         }
-        return attacking & ~position
+        return attacking
     }
 }
