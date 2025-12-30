@@ -1,9 +1,3 @@
-//
-//  ChessPlayer.swift
-//
-//
-//  Created by Evan Anderson on 1/26/25.
-//
 
 public enum ChessPlayer : Hashable, Sendable {
     /// Player 1

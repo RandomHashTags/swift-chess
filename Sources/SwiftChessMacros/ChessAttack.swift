@@ -1,9 +1,3 @@
-//
-//  ChessAttack.swift
-//
-//
-//  Created by Evan Anderson on 1/28/25.
-//
 
 import SwiftDiagnostics
 import SwiftSyntax

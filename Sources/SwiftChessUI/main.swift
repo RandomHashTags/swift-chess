@@ -1,10 +1,3 @@
-//
-//  SwiftChessUI.swift
-//
-//
-//  Created by Evan Anderson on 1/28/25.
-//
-
 /*
 // Adwaita HStack doesn't work | bruh
 import Adwaita
@@ -71,15 +64,14 @@ extension ChessBoard {
     struct View : AnyView {
         var viewContent : Body {
             HStack {
-                ForEach([8,7,6,5,4,3,2,1]) { file in
+                ForEach([0,1,2,3,4,5,6,7], horizontal: true) { file in
                     VStack {
-                        Text("FILE\(file)")
-                        HStack {
+                        if let f = ChessFile(file) {
                             ForEach([1,2,3,4,5,6,7,8]) { rank in
-                                Text("RANK\(rank)")
+                                Text("\(f)\(9 - rank)")
                             }
-                        }.halign(.center)
-                    }
+                        }
+                    }.frame(minWidth: 100, minHeight: nil)
                 }
             }
         }

@@ -1,9 +1,3 @@
-//
-//  BitMapTests.swift
-//
-//
-//  Created by Evan Anderson on 1/26/25.
-//
 
 #if compiler(>=6.0)
 

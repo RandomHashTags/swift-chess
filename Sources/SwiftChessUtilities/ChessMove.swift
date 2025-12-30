@@ -1,9 +1,3 @@
-//
-//  ChessMove.swift
-//
-//
-//  Created by Evan Anderson on 1/26/25.
-//
 
 public struct ChessMove : CustomStringConvertible, Hashable, Sendable {
     public let from:ChessPosition

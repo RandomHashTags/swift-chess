@@ -1,9 +1,3 @@
-//
-//  ChessPosition.swift
-//
-//
-//  Created by Evan Anderson on 1/26/25.
-//
 
 public struct ChessPosition : CustomStringConvertible, Hashable, Sendable {
     public static func + (position: ChessPosition, value: (Int, Int)) -> ChessPosition {

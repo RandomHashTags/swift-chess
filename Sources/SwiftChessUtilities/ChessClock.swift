@@ -1,9 +1,3 @@
-//
-//  ChessClock.swift
-//
-//
-//  Created by Evan Anderson on 1/26/25.
-//
 
 public struct ChessClock : Sendable {
     public let duration:ContinuousClock.Duration

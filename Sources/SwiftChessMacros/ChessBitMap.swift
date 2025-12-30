@@ -1,9 +1,3 @@
-//
-//  ChessBitMap.swift
-//
-//
-//  Created by Evan Anderson on 1/29/25.
-//
 
 import SwiftDiagnostics
 import SwiftSyntax

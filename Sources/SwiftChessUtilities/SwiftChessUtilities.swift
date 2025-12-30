@@ -1,9 +1,3 @@
-//
-//  SwiftChessUtilities.swift
-//
-//
-//  Created by Evan Anderson on 1/26/25.
-//
 
 // MARK: File
 public enum ChessFile {
@@ -24,6 +18,20 @@ public enum ChessFile {
     case notF
     case notG
     case notH
+
+    package init?<T: BinaryInteger>(_ file: T) {
+        switch file {
+        case 0: self = .a
+        case 1: self = .b
+        case 2: self = .c
+        case 3: self = .d
+        case 4: self = .e
+        case 5: self = .f
+        case 6: self = .g
+        case 7: self = .h
+        default: return nil
+        }
+    }
 }
 
 @freestanding(expression)
