@@ -1,5 +1,5 @@
 
-public enum ChessVariant {
+public enum ChessVariant: Sendable {
     case bullet
     case classical
     case rapid

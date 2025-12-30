@@ -1,10 +1,10 @@
 
-public struct ChessPosition: CustomStringConvertible, Hashable, Sendable {
-    public static func + (position: ChessPosition, value: (Int, Int)) -> ChessPosition {
-        return ChessPosition(file: position.file + value.0, rank: position.rank + value.1)
+public struct Position: CustomStringConvertible, Hashable, Sendable {
+    public static func + (position: Position, value: (Int, Int)) -> Position {
+        return Position(file: position.file + value.0, rank: position.rank + value.1)
     }
-    public static func - (position: ChessPosition, value: (Int, Int)) -> ChessPosition {
-        return ChessPosition(file: position.file - value.0, rank: position.rank - value.1)
+    public static func - (position: Position, value: (Int, Int)) -> Position {
+        return Position(file: position.file - value.0, rank: position.rank - value.1)
     }
 
     /// Horizontal
@@ -29,7 +29,7 @@ public struct ChessPosition: CustomStringConvertible, Hashable, Sendable {
         self.rank = Int(rank) - 49
     }
 
-    public func distance(to position: ChessPosition) -> (files: Int, ranks: Int) {
+    public func distance(to position: Position) -> (files: Int, ranks: Int) {
         return (position.file - file, position.rank - rank)
     }
 

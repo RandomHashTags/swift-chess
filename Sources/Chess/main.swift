@@ -11,7 +11,7 @@ try ask(
             print("What is your first move?")
         },
         "b": {
-            try move(from: ChessPosition(file: 4, rank: 1), to: ChessPosition(file: 4, rank: 3))
+            try move(from: Position(file: 4, rank: 1), to: Position(file: 4, rank: 3))
         }
     ]
 )
@@ -58,8 +58,8 @@ func ask(_ input: String, options: [String:() throws -> Void]) throws {
 
 @MainActor
 func move(
-    from: ChessPosition,
-    to: ChessPosition
+    from: Position,
+    to: Position
 ) throws {
     try move(ChessMove(from: from, to: to))
 }

@@ -1,5 +1,5 @@
 
-public struct ChessBoard: Sendable {
+public struct Board: Sendable {
     /// Horizontal
     public let files:Int
 
@@ -16,8 +16,8 @@ public struct ChessBoard: Sendable {
 }
 
 // MARK: Display
-extension ChessBoard {
-    public func display(with positions: [ChessPosition:ChessPiece.Active]) {
+extension Board {
+    public func display(with positions: [Position:ChessPiece.Active]) {
         let filesTimes2 = files*2
         var string = ""
         for _ in 0..<files/2 {
@@ -28,7 +28,7 @@ extension ChessBoard {
             string += "|"
             var slice = ""
             for file in stride(from: files-1, through: 0, by: -1) {
-                let position = ChessPosition(file: file, rank: rank)
+                let position = Position(file: file, rank: rank)
                 if let active = positions[position] {
                     slice += active.is(.pawn) ? "p" : active.piece.symbol
                 } else {

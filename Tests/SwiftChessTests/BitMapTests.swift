@@ -1,6 +1,4 @@
 
-#if compiler(>=6.0)
-
 import Testing
 @testable import ChessKit
 
@@ -24,5 +22,3 @@ struct BitMapTests {
         result = #chessBitMap(.startingPositions(forPiece: .queen, forWhite: false))
     }
 }
-
-#endif

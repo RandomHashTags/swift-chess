@@ -1,17 +1,9 @@
-//
-//  swift_chessTests.swift
-//
-//
-//  Created by Evan Anderson on 1/26/25.
-//
-
-#if compiler(>=6.0)
 
 import Testing
 @testable import ChessKit
 
 struct SwiftChessTests {
-    let game:ChessGame = ChessGame(chessClock: nil, board: ChessBoard(), player1: .white, player2: .black, firstMove: .white)
+    let game:ChessGame = ChessGame(chessClock: nil, board: Board(), player1: .white, player2: .black, firstMove: .white)
 
     @Test func fileMacro() {
         #expect(#chessFile(.a) == 0b0000000100000001000000010000000100000001000000010000000100000001)
@@ -28,12 +20,12 @@ struct SwiftChessTests {
     }
 
     @Test func positionDistance() {
-        var one = ChessPosition(file: 4, rank: 0)
-        var two = ChessPosition(file: 4, rank: 3)
+        var one = Position(file: 4, rank: 0)
+        var two = Position(file: 4, rank: 3)
         var distance:(Int, Int) = one.distance(to: two)
         #expect(distance == (0, 3))
 
-        two = ChessPosition(file: 5, rank: 1)
+        two = Position(file: 5, rank: 1)
         distance = one.distance(to: two)
         #expect(distance == (1, 1))
     }
@@ -42,28 +34,28 @@ struct SwiftChessTests {
         // white
         var player = ChessPlayer.white
         var piece = ChessPiece.Active(piece: .pawn, owner: .white, firstMove: true)
-        var from = ChessPosition(file: 0, rank: 1)
-        var to = ChessPosition(file: 0, rank: 3)
+        var from = Position(file: 0, rank: 1)
+        var to = Position(file: 0, rank: 3)
         #expect(player.canMove(piece, from: from, to: to, for: game))
 
         piece.firstMove = false
         #expect(!player.canMove(piece, from: from, to: to, for: game))
 
-        to = ChessPosition(file: 0, rank: 2)
+        to = Position(file: 0, rank: 2)
         #expect(player.canMove(piece, from: from, to: to, for: game))
 
         // black
         player = .black
         piece.owner = .black
         piece.firstMove = true
-        from = ChessPosition(file: 0, rank: 6)
-        to = ChessPosition(file: 0, rank: 4)
+        from = Position(file: 0, rank: 6)
+        to = Position(file: 0, rank: 4)
         #expect(player.canMove(piece, from: from, to: to, for: game))
 
         piece.firstMove = false
         #expect(!player.canMove(piece, from: from, to: to, for: game))
 
-        to = ChessPosition(file: 0, rank: 5)
+        to = Position(file: 0, rank: 5)
         #expect(player.canMove(piece, from: from, to: to, for: game))
     }
 
@@ -72,11 +64,11 @@ struct SwiftChessTests {
         var game:ChessGame = game
         var player = ChessPlayer.white
         var piece = ChessPiece.Active(piece: .bishop, owner: .white, firstMove: true)
-        var from = ChessPosition(file: 2, rank: 0)
-        var to = ChessPosition(file: 3, rank: 1)
+        var from = Position(file: 2, rank: 0)
+        var to = Position(file: 3, rank: 1)
         #expect(!player.canMove(piece, from: from, to: to, for: game))
 
-        game.positions[ChessPosition(file: 3, rank: 1)] = nil
+        game.positions[Position(file: 3, rank: 1)] = nil
         #expect(player.canMove(piece, from: from, to: to, for: game))
     }
 
@@ -85,16 +77,16 @@ struct SwiftChessTests {
         var game:ChessGame = game
         var player = ChessPlayer.white
         var piece = ChessPiece.Active(piece: .rook, owner: .white, firstMove: true)
-        var from = ChessPosition(file: 0, rank: 0)
-        var to = ChessPosition(file: 0, rank: 3)
+        var from = Position(file: 0, rank: 0)
+        var to = Position(file: 0, rank: 3)
         #expect(!player.canMove(piece, from: from, to: to, for: game))
 
-        game.positions[ChessPosition(file: 0, rank: 1)] = nil
+        game.positions[Position(file: 0, rank: 1)] = nil
         #expect(player.canMove(piece, from: from, to: to, for: game))
 
-        game.positions[ChessPosition(file: 1, rank: 0)] = nil
-        game.positions[ChessPosition(file: 1, rank: 1)] = nil
-        to = ChessPosition(file: 1, rank: 1)
+        game.positions[Position(file: 1, rank: 0)] = nil
+        game.positions[Position(file: 1, rank: 1)] = nil
+        to = Position(file: 1, rank: 1)
         #expect(!player.canMove(piece, from: from, to: to, for: game))
     }
 
@@ -103,8 +95,8 @@ struct SwiftChessTests {
         #expect(game.thinking == .white)
         
         game.positions = [:]
-        game.positions[ChessPosition(file: 3, rank: 3)] = ChessPiece.Active(piece: .king, owner: .white, firstMove: false)
-        game.positions[ChessPosition(file: 3, rank: 6)] = ChessPiece.Active(piece: .rook, owner: .black, firstMove: false)
+        game.positions[Position(file: 3, rank: 3)] = ChessPiece.Active(piece: .king, owner: .white, firstMove: false)
+        game.positions[Position(file: 3, rank: 6)] = ChessPiece.Active(piece: .rook, owner: .black, firstMove: false)
         game.calculateCheckStatus()
 
         #expect(game.inCheck)
@@ -117,15 +109,13 @@ struct SwiftChessTests {
     */
 }
 
-#endif
-
 func binary(_ number: UInt64) -> String {
-    let string:String = String.init(number, radix: 2)
-    let padded:String = String(repeating: "0", count: 64 - string.count) + string
-    var s:String = ""
-    var lastIndex:String.Index = padded.startIndex
+    let string = String.init(number, radix: 2)
+    let padded = String(repeating: "0", count: 64 - string.count) + string
+    var s = ""
+    var lastIndex = padded.startIndex
     for _ in 0..<8 {
-        let slice = padded[lastIndex..<padded.index(lastIndex, offsetBy: 8)].reversed()
+        let slice = padded[lastIndex..<padded.index(lastIndex, offsetBy: 8)]
         s += "\n" + slice
         padded.formIndex(&lastIndex, offsetBy: 8)
     }

@@ -1,12 +1,12 @@
 
 public struct ChessMove: CustomStringConvertible, Hashable, Sendable {
-    public let from:ChessPosition
-    public let to:ChessPosition
+    public let from:Position
+    public let to:Position
     public let promotion:ChessPiece?
 
     public init(
-        from: ChessPosition,
-        to: ChessPosition,
+        from: Position,
+        to: Position,
         promotion: ChessPiece? = nil
     ) {
         self.from = from
@@ -15,10 +15,10 @@ public struct ChessMove: CustomStringConvertible, Hashable, Sendable {
     }
 
     public init(from: some StringProtocol, to: some StringProtocol) throws {
-        guard let from = ChessPosition(algebraicNotation: from) else {
+        guard let from = Position(algebraicNotation: from) else {
             throw ChessMoveError.unrecognized(from)
         }
-        guard let to = ChessPosition(algebraicNotation: to) else {
+        guard let to = Position(algebraicNotation: to) else {
             throw ChessMoveError.unrecognized(to)
         }
         self.from = from

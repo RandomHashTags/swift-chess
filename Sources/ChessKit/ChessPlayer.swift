@@ -9,7 +9,7 @@ public enum ChessPlayer: Hashable, Sendable {
 
 // MARK: Starting positions
 extension ChessPlayer {
-    public func startingPositions(for piece: ChessPiece, at board: ChessBoard) -> Set<ChessPosition> {
+    public func startingPositions(for piece: ChessPiece, at board: Board) -> Set<Position> {
         let rank:Int
         let pawnRankAddition:Int
         switch self {
@@ -22,30 +22,30 @@ extension ChessPlayer {
         }
         switch piece {
         case .pawn:
-            var positions = Set<ChessPosition>()
+            var positions = Set<Position>()
             for i in 0..<board.files {
-                positions.insert(ChessPosition(file: i, rank: rank + pawnRankAddition))
+                positions.insert(Position(file: i, rank: rank + pawnRankAddition))
             }
             return positions
         case .bishop:
             return [
-                ChessPosition(file: 2, rank: rank),
-                ChessPosition(file: board.files-3, rank: rank)
+                Position(file: 2, rank: rank),
+                Position(file: board.files-3, rank: rank)
             ]
         case .rook:
             return [
-                ChessPosition(file: 0, rank: rank),
-                ChessPosition(file: board.files-1, rank: rank)
+                Position(file: 0, rank: rank),
+                Position(file: board.files-1, rank: rank)
             ]
         case .knight:
             return [
-                ChessPosition(file: 1, rank: rank),
-                ChessPosition(file: board.files-2, rank: rank)
+                Position(file: 1, rank: rank),
+                Position(file: board.files-2, rank: rank)
             ]
         case .queen:
-            return [ChessPosition(file: 3, rank: rank)]
+            return [Position(file: 3, rank: rank)]
         case .king:
-            return [ChessPosition(file: 4, rank: rank)]
+            return [Position(file: 4, rank: rank)]
         }
     }
 }
@@ -56,7 +56,7 @@ extension ChessPlayer {
         return canMove(piece, from: move.from, to: move.to, for: game)
     }
 
-    public func canMove(_ piece: ChessPiece.Active, from: ChessPosition, to: ChessPosition, for game: ChessGame) -> Bool {
+    public func canMove(_ piece: ChessPiece.Active, from: Position, to: Position, for game: ChessGame) -> Bool {
         let distance = from.distance(to: to)
         var canMove = canMove(piece: piece.piece, firstMove: piece.firstMove, distance: distance)
         //print("\(piece.owner) can move \(piece.piece) from \(from) to \(to): \(canMove) (distance=\(distance))")
@@ -139,7 +139,7 @@ extension ChessPlayer {
 extension ChessPlayer {
     public func canTravel(
         _ piece: ChessPiece.Active,
-        from: ChessPosition,
+        from: Position,
         distance: (files: Int, ranks: Int), game: ChessGame
     ) -> Bool {
         // TODO: make sure moving doesn't cause a check
@@ -185,7 +185,7 @@ extension ChessPlayer {
     }
     
     public func canMoveHorizontally(
-        from: ChessPosition,
+        from: Position,
         distance: (files: Int, ranks: Int),
         game: ChessGame
     ) -> Bool {
@@ -200,7 +200,7 @@ extension ChessPlayer {
     }
 
     public func canMoveVertically(
-        from: ChessPosition,
+        from: Position,
         distance: (files: Int, ranks: Int),
         game: ChessGame
     ) -> Bool {
@@ -215,7 +215,7 @@ extension ChessPlayer {
     }
 
     public func canMoveDiagonally(
-        from: ChessPosition,
+        from: Position,
         distance: (files: Int, ranks: Int),
         game: ChessGame
     ) -> Bool {
@@ -230,7 +230,7 @@ extension ChessPlayer {
     }
 
     public func doesCapture(
-        from: ChessPosition,
+        from: Position,
         distance: (files: Int, ranks: Int),
         game: ChessGame
     ) -> Bool {

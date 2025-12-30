@@ -37,7 +37,7 @@ struct Content: WindowView {
                 }
             }
         } content: {
-            ChessBoard.View().topToolbar {
+            Board.View().topToolbar {
                 HeaderBar.end {
                 }
             }
@@ -60,7 +60,7 @@ struct Content: WindowView {
     }
 }
 
-extension ChessBoard {
+extension Board {
     struct View: AnyView {
         var viewContent: Body {
             HStack {
