@@ -1,5 +1,5 @@
 
-import SwiftChessUtilities
+import ChessKit
 
 var game = ChessGame()
 game.display()
@@ -30,7 +30,7 @@ let gameCommands:[String:(String) throws -> Void] = [
     }
 ]
 
-let unknownCommandMessage:String = "Unknown command \"\". Allowed commands: \n" + ["display", "move <from> <to>", "resign"].joined(separator: "\n- ")
+let unknownCommandMessage = "Unknown command. Allowed commands: \n- " + ["display", "move <from> <to>", "resign"].joined(separator: "\n- ")
 
 while !Task.isCancelled {
     if let input = readLine() {
@@ -48,7 +48,7 @@ func unknownCommand() {
 }
 
 func ask(_ input: String, options: [String:() throws -> Void]) throws {
-    let string:String = input + " (" + options.keys.joined(separator: ",") + ")"
+    let string = input + " (" + options.keys.joined(separator: ",") + ")"
     print(string)
     guard let v = readLine() else { return }
     if let logic = options[v] {

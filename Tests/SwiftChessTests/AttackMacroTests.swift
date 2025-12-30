@@ -2,7 +2,7 @@
 #if compiler(>=6.0)
 
 import Testing
-@testable import SwiftChessUtilities
+@testable import ChessKit
 
 struct AttackMacroTests {
     @Test func pawnAttackMacro() {

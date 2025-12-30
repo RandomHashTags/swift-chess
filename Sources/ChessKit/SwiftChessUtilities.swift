@@ -35,7 +35,7 @@ public enum ChessFile {
 }
 
 @freestanding(expression)
-public macro chessFile(_ file: ChessFile) -> UInt64 = #externalMacro(module: "SwiftChessMacros", type: "ChessFile")
+public macro chessFile(_ file: ChessFile) -> UInt64 = #externalMacro(module: "Macros", type: "ChessFile")
 
 // MARK: Rank
 public enum ChessRank {
@@ -50,12 +50,12 @@ public enum ChessRank {
 }
 
 @freestanding(expression)
-public macro chessRank(_ rank: ChessRank) -> UInt64 = #externalMacro(module: "SwiftChessMacros", type: "ChessRank")
+public macro chessRank(_ rank: ChessRank) -> UInt64 = #externalMacro(module: "Macros", type: "ChessRank")
 
 // MARK: Attack
 @freestanding(expression)
-public macro chessAttack(player: ChessPlayer = .white, piece: ChessPiece, file: ChessFile, rank: ChessRank) -> UInt64 = #externalMacro(module: "SwiftChessMacros", type: "ChessAttack")
+public macro chessAttack(player: ChessPlayer = .white, piece: ChessPiece, file: ChessFile, rank: ChessRank) -> UInt64 = #externalMacro(module: "Macros", type: "ChessAttack")
 
 // MARK: Bit Map
 @freestanding(expression)
-public macro chessBitMap(_ bitMap: ChessBitMap) -> UInt64 = #externalMacro(module: "SwiftChessMacros", type: "ChessBitMap")
+public macro chessBitMap(_ bitMap: ChessBitMap) -> UInt64 = #externalMacro(module: "Macros", type: "ChessBitMap")

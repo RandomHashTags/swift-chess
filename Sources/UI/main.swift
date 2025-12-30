@@ -1,7 +1,7 @@
 /*
 // Adwaita HStack doesn't work | bruh
 import Adwaita
-import SwiftChessUtilities
+import ChessKit
 
 @main
 struct SwiftChessUI: App {

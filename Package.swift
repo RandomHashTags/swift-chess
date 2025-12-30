@@ -8,7 +8,7 @@ let package = Package(
     products: [
         /*.library(
             name: "swift-chess",
-            targets: ["SwiftChess"]
+            targets: ["Chess"]
         )*/
     ],
     dependencies: [
@@ -20,7 +20,7 @@ let package = Package(
     ],
     targets: [
         .macro(
-            name: "SwiftChessMacros",
+            name: "Macros",
             dependencies: [
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
                 .product(name: "SwiftDiagnostics", package: "swift-syntax"),
@@ -30,34 +30,34 @@ let package = Package(
         ),
 
         .target(
-            name: "SwiftChessUtilities",
+            name: "ChessKit",
             dependencies: [
-                "SwiftChessMacros"
+                "Macros"
             ]
         ),
 
         .executableTarget(
-            name: "SwiftChessUI",
+            name: "UI",
             dependencies: [
-                "SwiftChessUtilities",
+                "ChessKit",
                 //.product(name: "Adwaita", package: "adwaita-swift")
             ]
         ),
 
         .executableTarget(
-            name: "SwiftChess",
+            name: "Chess",
             dependencies: [
-                "SwiftChessUtilities"
+                "ChessKit"
             ]
         ),
 
         .target(
-            name: "SwiftChessEvaluation"
+            name: "Evaluation"
         ),
 
         .testTarget(
             name: "SwiftChessTests",
-            dependencies: ["SwiftChess"]
+            dependencies: ["Chess"]
         )
     ]
 )

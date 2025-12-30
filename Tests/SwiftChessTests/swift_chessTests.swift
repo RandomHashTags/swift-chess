@@ -8,7 +8,7 @@
 #if compiler(>=6.0)
 
 import Testing
-@testable import SwiftChessUtilities
+@testable import ChessKit
 
 struct SwiftChessTests {
     let game:ChessGame = ChessGame(chessClock: nil, board: ChessBoard(), player1: .white, player2: .black, firstMove: .white)
