@@ -1,7 +1,7 @@
 
 import ChessKit
 
-var game = ChessGame()
+var game = Game()
 game.display()
 
 try ask(

@@ -1,5 +1,5 @@
 
-public enum ChessResult {
+public enum ChessResult: Sendable {
     case draw
     case lost
     case resigned

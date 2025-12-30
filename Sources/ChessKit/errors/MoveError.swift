@@ -1,7 +1,7 @@
 
-public enum ChessMoveError: Error {
+public enum MoveError: Error, Sendable {
     case illegal(String)
     case pieceNotFoundForPosition(Position)
     case cannotMoveOpponentPiece
-    case unrecognized(any StringProtocol)
+    case unrecognized(any StringProtocol & Sendable)
 }

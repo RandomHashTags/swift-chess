@@ -112,7 +112,7 @@ struct AttackMacroTests {
         var position = .fileA & .rank8
         var expected = (.fileB & .rank7) | (.fileC & .rank6) | (.fileD & .rank5) | (.fileE & .rank4) | (.fileF & .rank3) | (.fileG & .rank2) | (.fileH & .rank1)
         expected &= ~position
-        var attacks = BitBoard.bishopAttack(at: position)
+        var attacks = BitMap.bishopAttack(at: position)
         #expect(attacks == expected, bitMapComment(expected: expected, actual: attacks))
 
         expected |= position
@@ -143,7 +143,7 @@ struct AttackMacroTests {
     func attackBitMapKnight() {
         var position = .fileA & .rank8
         var expected = ~position & ((.fileB & .rank6) | (.fileC & .rank7))
-        var attacks = BitBoard.knightAttack(at: position)
+        var attacks = BitMap.knightAttack(at: position)
         #expect(attacks == expected, bitMapComment(expected: expected, actual: attacks))
 
         position = .fileC & .rank8
@@ -156,7 +156,7 @@ struct AttackMacroTests {
     func attackBitMapRook() {
         var position = .fileA & .rank8
         var expected = ~position & (.fileA | .rank8)
-        var attacks = BitBoard.rookAttack(at: position)
+        var attacks = BitMap.rookAttack(at: position)
         #expect(expected == attacks, bitMapComment(expected: expected, actual: attacks))
 
         position = .fileC & .rank4
@@ -169,7 +169,7 @@ struct AttackMacroTests {
     func attackBitMapQueen() {
         var position = .fileA & .rank8
         var expected = ~position & (.fileA | .rank8 | .backSlash)
-        var attacks = BitBoard.queenAttack(at: position)
+        var attacks = BitMap.queenAttack(at: position)
         #expect(expected == attacks, bitMapComment(expected: expected, actual: attacks))
 
         position = .fileH & .rank8
@@ -182,7 +182,7 @@ struct AttackMacroTests {
     func attackBitMapKing() {
         var position = .fileA & .rank8
         var expected = ~position & ((.fileA & .rank7) | (.fileB & .rank7) | (.fileB & .rank8))
-        var attacks = BitBoard.kingAttack(at: position)
+        var attacks = BitMap.kingAttack(at: position)
         #expect(expected == attacks, bitMapComment(expected: expected, actual: attacks))
     }
 }

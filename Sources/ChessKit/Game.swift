@@ -1,5 +1,5 @@
 
-public struct ChessGame: Sendable {
+public struct Game: Sendable {
     public let clock:ContinuousClock
     public let chessClock:ChessClock?
     public let board:Board
@@ -86,11 +86,11 @@ public struct ChessGame: Sendable {
 }
 
 // MARK: Flags
-extension ChessGame {
+extension Game {
     enum Flags: UInt8, Sendable {
-        case active
-        case inCheck
-        case inCheckmate
+        case active = 1
+        case inCheck = 2
+        case inCheckmate = 4
     }
 
     private func isFlag(_ flag: Flags) -> Bool {
@@ -116,17 +116,19 @@ extension ChessGame {
 }
 
 // MARK: Move
-extension ChessGame {
-    public mutating func move(_ move: ChessMove) throws -> ChessMove.Result {
+extension Game {
+    public mutating func move(
+        _ move: ChessMove
+    ) throws(MoveError) -> ChessMove.Result {
         let thinkDuration = thinkingDuration
         guard var piece = piece(at: move.from) else {
-            throw ChessMoveError.pieceNotFoundForPosition(move.from)
+            throw MoveError.pieceNotFoundForPosition(move.from)
         }
         guard piece.owner == thinking else {
-            throw ChessMoveError.cannotMoveOpponentPiece
+            throw MoveError.cannotMoveOpponentPiece
         }
         guard thinking.canMove(piece, move: move, for: self) else {
-            throw ChessMoveError.illegal("\(piece.piece) cannot move from \(move.from) to \(move.to)")
+            throw MoveError.illegal("\(piece.piece) cannot move from \(move.from) to \(move.to)")
         }
         let captured = positions[move.to]
         positions[move.from] = nil
@@ -161,14 +163,19 @@ extension ChessGame {
 }
 
 // MARK: LogEntry
-extension ChessGame {
+extension Game {
     public struct LogEntry: Sendable {
         public let thinkDuration:Duration
         public let player:ChessPlayer
         public let piece:ChessPiece
         public let move:ChessMove
 
-        public init(thinkDuration: Duration, player: ChessPlayer, piece: ChessPiece, move: ChessMove) {
+        public init(
+            thinkDuration: Duration,
+            player: ChessPlayer,
+            piece: ChessPiece,
+            move: ChessMove
+        ) {
             self.thinkDuration = thinkDuration
             self.player = player
             self.piece = piece
@@ -182,7 +189,7 @@ extension ChessGame {
 }
 
 // MARK: Check status
-extension ChessGame {
+extension Game {
     @usableFromInline
     mutating func calculateCheckStatus() {
         for (kingPos, piece) in positions {
@@ -324,88 +331,10 @@ extension ChessGame {
 }
 
 // MARK: Checkmate status
-extension ChessGame {
+extension Game {
     /// Thinking player is in check; calculate if it is checkmate
     mutating func calculateCheckmateStatus(kingPos: Position) { // TODO: finish
         setFlag(.inCheck, value: true)
         setFlag(.inCheckmate, value: false)
-    }
-}
-
-// MARK: Bit Boards
-extension ChessGame {
-    public struct BitBoards: Sendable {
-        public internal(set) var populatedSquares = #chessBitMap(.newGame)
-        public internal(set) var playerBlack:Player
-        public internal(set) var playerWhite:Player
-
-        public init(
-            populatedSquares: UInt64
-        ) {
-            self.populatedSquares = populatedSquares
-            playerBlack = Player()
-            playerWhite = Player()
-        }
-
-        public func inCheck(turn: ChessPlayer) -> Bool {
-            let defending:Player, attacking:Player
-            switch turn {
-            case .black:
-                attacking = playerWhite
-                defending = playerBlack
-            case .white:
-                attacking = playerBlack
-                defending = playerWhite
-            }
-            return defending.king & attacking.attacking > 0
-        }
-    }
-}
-
-extension ChessGame.BitBoards {
-    public struct Player: Sendable {
-        public internal(set) var pieces:UInt64
-        public internal(set) var pinnedPieces:UInt64
-
-        /// Squares under attack by the pieces.
-        public internal(set) var attacking:UInt64
-        /// Squares for the attacking pieces.
-        public internal(set) var attackers:UInt64
-
-        /// Populated squares the pieces are defending.
-        public internal(set) var defending:UInt64
-        /// Squares for the defending pieces.
-        public internal(set) var defenders:UInt64
-
-        /// Squares for the pawns.
-        public internal(set) var pawns:UInt64
-        /// Squares for the rooks.
-        public internal(set) var rooks:UInt64
-        /// Squares for the knights.
-        public internal(set) var knights:UInt64
-        public internal(set) var bishops:UInt64
-        public internal(set) var queens:UInt64
-        public internal(set) var king:UInt64
-
-        public init() {
-            pieces = 0
-            pinnedPieces = 0
-            attacking = 0
-            attackers = 0
-            defending = 0
-            defenders = 0
-            pawns = 0
-            rooks = 0
-            knights = 0
-            bishops = 0
-            queens = 0
-            king = 0
-        }
-
-        public func defenders(for squares: UInt64) -> UInt64 {
-            var value:UInt64 = 0
-            let d:UInt64 = defending & squares
-            return value
-        }
     }
 }

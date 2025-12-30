@@ -9,7 +9,10 @@ public enum ChessPlayer: Hashable, Sendable {
 
 // MARK: Starting positions
 extension ChessPlayer {
-    public func startingPositions(for piece: ChessPiece, at board: Board) -> Set<Position> {
+    public func startingPositions(
+        for piece: ChessPiece,
+        at board: Board
+    ) -> Set<Position> {
         let rank:Int
         let pawnRankAddition:Int
         switch self {
@@ -52,11 +55,20 @@ extension ChessPlayer {
 
 // MARK: Can move
 extension ChessPlayer {
-    public func canMove(_ piece: ChessPiece.Active, move: ChessMove, for game: ChessGame) -> Bool {
+    public func canMove(
+        _ piece: ChessPiece.Active,
+        move: ChessMove,
+        for game: Game
+    ) -> Bool {
         return canMove(piece, from: move.from, to: move.to, for: game)
     }
 
-    public func canMove(_ piece: ChessPiece.Active, from: Position, to: Position, for game: ChessGame) -> Bool {
+    public func canMove(
+        _ piece: ChessPiece.Active,
+        from: Position,
+        to: Position,
+        for game: Game
+    ) -> Bool {
         let distance = from.distance(to: to)
         var canMove = canMove(piece: piece.piece, firstMove: piece.firstMove, distance: distance)
         //print("\(piece.owner) can move \(piece.piece) from \(from) to \(to): \(canMove) (distance=\(distance))")
@@ -68,7 +80,7 @@ extension ChessPlayer {
                     if let capturable = game.positions[to], capturable.owner != game.thinking {
                         // pawn diagonally captures
                         canMove = true
-                    } else if let lastMove:ChessGame.LogEntry = game.log.last, lastMove.isEnPassantable && lastMove.player != game.thinking {
+                    } else if let lastMove:Game.LogEntry = game.log.last, lastMove.isEnPassantable && lastMove.player != game.thinking {
                         // can en passant, but is it allowed?
                         if lastMove.player == .white {
                             canMove = to == lastMove.move.from - (0, 1)
@@ -140,7 +152,8 @@ extension ChessPlayer {
     public func canTravel(
         _ piece: ChessPiece.Active,
         from: Position,
-        distance: (files: Int, ranks: Int), game: ChessGame
+        distance: (files: Int, ranks: Int),
+        game: Game
     ) -> Bool {
         // TODO: make sure moving doesn't cause a check
         switch piece.piece {
@@ -187,7 +200,7 @@ extension ChessPlayer {
     public func canMoveHorizontally(
         from: Position,
         distance: (files: Int, ranks: Int),
-        game: ChessGame
+        game: Game
     ) -> Bool {
         let doesCapture = doesCapture(from: from, distance: distance, game: game) // TODO: fix
         let increment = distance.files > 0 ? -1 : 1
@@ -202,7 +215,7 @@ extension ChessPlayer {
     public func canMoveVertically(
         from: Position,
         distance: (files: Int, ranks: Int),
-        game: ChessGame
+        game: Game
     ) -> Bool {
         let doesCapture = doesCapture(from: from, distance: distance, game: game) // TODO: fix
         let increment = distance.ranks > 0 ? -1 : 1
@@ -217,7 +230,7 @@ extension ChessPlayer {
     public func canMoveDiagonally(
         from: Position,
         distance: (files: Int, ranks: Int),
-        game: ChessGame
+        game: Game
     ) -> Bool {
         let doesCapture = doesCapture(from: from, distance: distance, game: game) // TODO: fix
         let increment = distance.files > 0 ? 1 : -1
@@ -232,7 +245,7 @@ extension ChessPlayer {
     public func doesCapture(
         from: Position,
         distance: (files: Int, ranks: Int),
-        game: ChessGame
+        game: Game
     ) -> Bool {
         guard let capturable = game.positions[from + distance] else { return false }
         return capturable.owner != game.thinking

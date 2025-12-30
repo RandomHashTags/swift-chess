@@ -14,12 +14,15 @@ public struct ChessMove: CustomStringConvertible, Hashable, Sendable {
         self.promotion = promotion
     }
 
-    public init(from: some StringProtocol, to: some StringProtocol) throws {
+    public init(
+        from: some StringProtocol & Sendable,
+        to: some StringProtocol & Sendable
+    ) throws {
         guard let from = Position(algebraicNotation: from) else {
-            throw ChessMoveError.unrecognized(from)
+            throw MoveError.unrecognized(from)
         }
         guard let to = Position(algebraicNotation: to) else {
-            throw ChessMoveError.unrecognized(to)
+            throw MoveError.unrecognized(to)
         }
         self.from = from
         self.to = to

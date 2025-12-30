@@ -3,7 +3,7 @@ import Testing
 @testable import ChessKit
 
 struct SwiftChessTests {
-    let game:ChessGame = ChessGame(chessClock: nil, board: Board(), player1: .white, player2: .black, firstMove: .white)
+    let game:Game = Game(chessClock: nil, board: Board(), player1: .white, player2: .black, firstMove: .white)
 
     @Test func fileMacro() {
         #expect(#chessFile(.a) == 0b0000000100000001000000010000000100000001000000010000000100000001)
@@ -61,7 +61,7 @@ struct SwiftChessTests {
 
     @Test func bishopMoves() {
         // white
-        var game:ChessGame = game
+        var game:Game = game
         var player = ChessPlayer.white
         var piece = ChessPiece.Active(piece: .bishop, owner: .white, firstMove: true)
         var from = Position(file: 2, rank: 0)
@@ -74,7 +74,7 @@ struct SwiftChessTests {
 
     @Test func rookMoves() {
         // white
-        var game:ChessGame = game
+        var game:Game = game
         var player = ChessPlayer.white
         var piece = ChessPiece.Active(piece: .rook, owner: .white, firstMove: true)
         var from = Position(file: 0, rank: 0)
@@ -91,7 +91,7 @@ struct SwiftChessTests {
     }
 
     @Test func checkStatus() {
-        var game:ChessGame = game
+        var game:Game = game
         #expect(game.thinking == .white)
         
         game.positions = [:]
