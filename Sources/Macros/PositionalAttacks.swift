@@ -5,7 +5,10 @@ import SwiftSyntax
 import SwiftSyntaxMacros
 
 enum PositionalAttacks: ExpressionMacro {
-    static func expansion(of node: some FreestandingMacroExpansionSyntax, in context: some MacroExpansionContext) throws -> ExprSyntax {
+    static func expansion(
+        of node: some FreestandingMacroExpansionSyntax,
+        in context: some MacroExpansionContext
+    ) throws -> ExprSyntax {
         var piece = "pawn"
         var white = true
         for argument in node.arguments {
