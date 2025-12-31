@@ -12,8 +12,6 @@ public struct Game: Sendable {
 
     public var log:[LogEntry]
 
-    public let player1:PlayerColor
-    public let player2:PlayerColor
     /// Which player got to make the first move.
     public let firstMove:PlayerColor
 
@@ -25,8 +23,6 @@ public struct Game: Sendable {
     public init(
         chessClock: ChessClock? = nil,
         board: Board = Board(),
-        player1: PlayerColor = .white,
-        player2: PlayerColor = .black,
         firstMove: PlayerColor = .white
     ) {
         clock = ContinuousClock()
@@ -39,20 +35,18 @@ public struct Game: Sendable {
             player2RemainingThinkDuration = .zero
         }
         self.board = board
-        self.player1 = player1
-        self.player2 = player2
         self.firstMove = firstMove
         thinking = firstMove
         thinkingInstant = clock.now
         var pos = [Position:PieceType.Active]()
         for piece in [PieceType.pawn, .rook, .knight, .bishop, .queen, .king] {
-            let positions1 = player1.startingPositions(for: piece, at: board)
+            let positions1 = PlayerColor.white.startingPositions(for: piece, at: board)
             for position in positions1 {
-                pos[position] = PieceType.Active(piece: piece, owner: player1, firstMove: true)
+                pos[position] = PieceType.Active(piece: piece, owner: PlayerColor.white, firstMove: true)
             }
-            let positions2 = player2.startingPositions(for: piece, at: board)
+            let positions2 = PlayerColor.black.startingPositions(for: piece, at: board)
             for position in positions2 {
-                pos[position] = PieceType.Active(piece: piece, owner: player2, firstMove: true)
+                pos[position] = PieceType.Active(piece: piece, owner: PlayerColor.black, firstMove: true)
             }
         }
         positions = pos
@@ -136,17 +130,17 @@ extension Game {
         log.append(.init(thinkDuration: thinkDuration, player: thinking, piece: piece.piece, move: move))
         switch thinking {
         case .black:
-            if chessClock != nil {
+            if let chessClock {
                 player2RemainingThinkDuration -= thinkDuration
-                if let increment = chessClock?.increment(self.move) {
+                if let increment = chessClock.increment(self.move) {
                     player2RemainingThinkDuration += increment
                 }
             }
             thinking = .white
         case .white:
-            if chessClock != nil {
+            if let chessClock {
                 player1RemainingThinkDuration -= thinkDuration
-                if let increment = chessClock?.increment(self.move) {
+                if let increment = chessClock.increment(self.move) {
                     player1RemainingThinkDuration += increment
                 }
             }

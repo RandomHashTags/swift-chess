@@ -18,18 +18,17 @@ try ask(
 
 let commandsTask = Task {
     while !Task.isCancelled {
-        if let input = readLine() {
-            let values = input.split(separator: " ")
-            if let key = values.first, let cmd = gameCommands[String(key)] {
-                try cmd(input)
-            } else {
-                unknownCommand()
-            }
+        guard let input = readLine() else { continue }
+        let values = input.split(separator: " ")
+        if let key = values.first, let cmd = gameCommands[key] {
+            try cmd(input)
+        } else {
+            unknownCommand()
         }
     }
 }
 
-let gameCommands:[String:(String) throws -> Void] = [
+let gameCommands:[Substring:(String) throws -> Void] = [
     "display": { _ in
         game.display()
     },
@@ -51,7 +50,7 @@ let gameCommands:[String:(String) throws -> Void] = [
         try move(parsedMove)
     },
     "resign": { _ in
-        print("Resignation received by \(game.thinking); \(game.player1 == game.thinking ? game.player2 : game.player1) wins!")
+        print("Resignation received by \(game.thinking); \(game.thinking == .white ? PlayerColor.black : .white) wins!")
         game.end()
         commandsTask.cancel()
     }

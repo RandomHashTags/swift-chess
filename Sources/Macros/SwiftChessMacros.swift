@@ -5,7 +5,7 @@ import SwiftSyntaxMacros
 @main
 struct SwiftChessMacros: CompilerPlugin {
     let providingMacros:[any Macro.Type] = [
-        ChessAttack.self,
+        PositionalAttacks.self,
         ChessBitMap.self
     ]
 }

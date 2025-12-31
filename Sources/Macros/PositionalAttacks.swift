@@ -4,7 +4,7 @@ import SwiftDiagnostics
 import SwiftSyntax
 import SwiftSyntaxMacros
 
-enum ChessAttack: ExpressionMacro {
+enum PositionalAttacks: ExpressionMacro {
     static func expansion(of node: some FreestandingMacroExpansionSyntax, in context: some MacroExpansionContext) throws -> ExprSyntax {
         var piece = "pawn"
         var white = true

@@ -32,6 +32,4 @@ extension BitMap {
 extension BitMap {
     public static let whiteSquares:BitMap = 0b10101010_01010101_10101010_01010101_10101010_01010101_10101010_01010101
     public static let blackSquares:BitMap = ~whiteSquares
-    public static let backSlash:BitMap = 0b10000000_01000000_00100000_00010000_00001000_00000100_00000010_00000001
-    public static let forwardSlash:BitMap = 0b00000001_00000010_00000100_00001000_00010000_00100000_01000000_10000000
 }
