@@ -18,7 +18,7 @@ enum ChessAttack: ExpressionMacro {
                 break
             }
         }
-        var array = [UInt64](repeating: 0, count: 64)
+        var array = [BitMap](repeating: 0, count: 64)
         var index = 0
         var file = 8
         var rank = 1

@@ -2,7 +2,6 @@
 import ChessUtilities
 
 public struct BitPiece: Sendable {
-    public internal(set) var position:BitMap
     public internal(set) var attacking:BitMap
     public internal(set) var type:PieceType
     public internal(set) var owner:PlayerColor
@@ -13,18 +12,35 @@ public struct BitPiece: Sendable {
         type: PieceType,
         owner: PlayerColor
     ) {
-        self.position = position
+        self.init(position: position, type: type, owner: owner, removed: false)
+    }
+
+    init(
+        position: BitMap,
+        type: PieceType,
+        owner: PlayerColor,
+        removed: Bool
+    ) {
         self.type = type
         self.owner = owner
-        removed = false
+        self.removed = removed
         attacking = Self.attackingBitMap(for: type, at: position, owner: owner)
     }
 
+    public var defending: BitMap {
+        attacking
+    }
+}
+
+// MARK: Move
+extension BitPiece {
     mutating func move(to: BitMap) {
-        position = to
         attacking = Self.attackingBitMap(for: type, at: to, owner: owner)
     }
+}
 
+// MARK: Attack bit map
+extension BitPiece {
     static func attackingBitMap(
         for type: PieceType,
         at position: BitMap,

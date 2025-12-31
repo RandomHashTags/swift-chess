@@ -1,7 +1,7 @@
 
 import ChessUtilities
 
-// MARK: Bishop
+// MARK: Attack bit maps
 extension BitMap {
     static let whitePawnAttacks:[64 of BitMap] = #chessAttack(player: .white, piece: .pawn)
     static let blackPawnAttacks:[64 of BitMap] = #chessAttack(player: .black, piece: .pawn)
