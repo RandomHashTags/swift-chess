@@ -19,7 +19,7 @@ struct SwiftChessTests {
     @Test func pawnFirstMoves() {
         // white
         var player = PlayerColor.white
-        var piece = ChessPiece.Active(piece: .pawn, owner: .white, firstMove: true)
+        var piece = PieceType.Active(piece: .pawn, owner: .white, firstMove: true)
         var from = Position(file: 0, rank: 1)
         var to = Position(file: 0, rank: 3)
         #expect(player.canMove(piece, from: from, to: to, for: game))
@@ -49,7 +49,7 @@ struct SwiftChessTests {
         // white
         var game:Game = game
         var player = PlayerColor.white
-        var piece = ChessPiece.Active(piece: .bishop, owner: .white, firstMove: true)
+        var piece = PieceType.Active(piece: .bishop, owner: .white, firstMove: true)
         var from = Position(file: 2, rank: 0)
         var to = Position(file: 3, rank: 1)
         #expect(!player.canMove(piece, from: from, to: to, for: game))
@@ -62,7 +62,7 @@ struct SwiftChessTests {
         // white
         var game:Game = game
         var player = PlayerColor.white
-        var piece = ChessPiece.Active(piece: .rook, owner: .white, firstMove: true)
+        var piece = PieceType.Active(piece: .rook, owner: .white, firstMove: true)
         var from = Position(file: 0, rank: 0)
         var to = Position(file: 0, rank: 3)
         #expect(!player.canMove(piece, from: from, to: to, for: game))
@@ -81,8 +81,8 @@ struct SwiftChessTests {
         #expect(game.thinking == .white)
         
         game.positions = [:]
-        game.positions[Position(file: 3, rank: 3)] = ChessPiece.Active(piece: .king, owner: .white, firstMove: false)
-        game.positions[Position(file: 3, rank: 6)] = ChessPiece.Active(piece: .rook, owner: .black, firstMove: false)
+        game.positions[Position(file: 3, rank: 3)] = PieceType.Active(piece: .king, owner: .white, firstMove: false)
+        game.positions[Position(file: 3, rank: 6)] = PieceType.Active(piece: .rook, owner: .black, firstMove: false)
         game.calculateCheckStatus()
 
         #expect(game.inCheck)

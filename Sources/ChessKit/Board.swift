@@ -17,7 +17,7 @@ public struct Board: Sendable {
 
 // MARK: Display
 extension Board {
-    public func display(with positions: [Position:ChessPiece.Active]) {
+    public func display(with positions: [Position:PieceType.Active]) {
         let filesTimes2 = files*2
         var string = ""
         for _ in 0..<files/2 {
@@ -30,7 +30,7 @@ extension Board {
             for file in stride(from: files-1, through: 0, by: -1) {
                 let position = Position(file: file, rank: rank)
                 if let active = positions[position] {
-                    slice += active.is(.pawn) ? "p" : active.piece.symbol
+                    slice += active.piece.notationFEN(for: active.owner)
                 } else {
                     slice += " "
                 }

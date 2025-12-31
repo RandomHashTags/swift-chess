@@ -10,7 +10,7 @@ public enum PlayerColor: Sendable {
 // MARK: Starting positions
 extension PlayerColor {
     public func startingPositions(
-        for piece: ChessPiece,
+        for piece: PieceType,
         at board: Board
     ) -> Set<Position> {
         let rank:Int
@@ -56,7 +56,7 @@ extension PlayerColor {
 // MARK: Can move
 extension PlayerColor {
     public func canMove(
-        _ piece: ChessPiece.Active,
+        _ piece: PieceType.Active,
         move: ChessMove,
         for game: Game
     ) -> Bool {
@@ -64,7 +64,7 @@ extension PlayerColor {
     }
 
     public func canMove(
-        _ piece: ChessPiece.Active,
+        _ piece: PieceType.Active,
         from: Position,
         to: Position,
         for game: Game
@@ -100,7 +100,7 @@ extension PlayerColor {
     }
 
     public func canMove(
-        piece: ChessPiece,
+        piece: PieceType,
         firstMove: Bool,
         distance: (files: Int, ranks: Int)
     ) -> Bool {
@@ -150,7 +150,7 @@ extension PlayerColor {
 // MARK: Can travel
 extension PlayerColor {
     public func canTravel(
-        _ piece: ChessPiece.Active,
+        _ piece: PieceType.Active,
         from: Position,
         distance: (files: Int, ranks: Int),
         game: Game

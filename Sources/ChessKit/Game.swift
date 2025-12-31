@@ -8,7 +8,7 @@ public struct Game: Sendable {
     public var thinkingInstant:ContinuousClock.Instant
     public var player1RemainingThinkDuration:ContinuousClock.Duration
     public var player2RemainingThinkDuration:ContinuousClock.Duration
-    public var positions:[Position:ChessPiece.Active]
+    public var positions:[Position:PieceType.Active]
 
     public var log:[LogEntry]
 
@@ -44,15 +44,15 @@ public struct Game: Sendable {
         self.firstMove = firstMove
         thinking = firstMove
         thinkingInstant = clock.now
-        var pos = [Position:ChessPiece.Active]()
-        for piece in [ChessPiece.pawn, .rook, .knight, .bishop, .queen, .king] {
+        var pos = [Position:PieceType.Active]()
+        for piece in [PieceType.pawn, .rook, .knight, .bishop, .queen, .king] {
             let positions1 = player1.startingPositions(for: piece, at: board)
             for position in positions1 {
-                pos[position] = ChessPiece.Active(piece: piece, owner: player1, firstMove: true)
+                pos[position] = PieceType.Active(piece: piece, owner: player1, firstMove: true)
             }
             let positions2 = player2.startingPositions(for: piece, at: board)
             for position in positions2 {
-                pos[position] = ChessPiece.Active(piece: piece, owner: player2, firstMove: true)
+                pos[position] = PieceType.Active(piece: piece, owner: player2, firstMove: true)
             }
         }
         positions = pos
@@ -75,7 +75,7 @@ public struct Game: Sendable {
         return thinkingInstant - clock.now
     }
 
-    public func piece(at position: Position) -> ChessPiece.Active? {
+    public func piece(at position: Position) -> PieceType.Active? {
         return positions[position]
     }
 
@@ -166,13 +166,13 @@ extension Game {
     public struct LogEntry: Sendable {
         public let thinkDuration:Duration
         public let player:PlayerColor
-        public let piece:ChessPiece
+        public let piece:PieceType
         public let move:ChessMove
 
         public init(
             thinkDuration: Duration,
             player: PlayerColor,
-            piece: ChessPiece,
+            piece: PieceType,
             move: ChessMove
         ) {
             self.thinkDuration = thinkDuration

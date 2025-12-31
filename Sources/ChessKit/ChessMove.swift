@@ -2,12 +2,12 @@
 public struct ChessMove: CustomStringConvertible, Hashable, Sendable {
     public let from:Position
     public let to:Position
-    public let promotion:ChessPiece?
+    public let promotion:PieceType?
 
     public init(
         from: Position,
         to: Position,
-        promotion: ChessPiece? = nil
+        promotion: PieceType? = nil
     ) {
         self.from = from
         self.to = to
@@ -41,14 +41,14 @@ public struct ChessMove: CustomStringConvertible, Hashable, Sendable {
 // MARK: Result
 extension ChessMove {
     public struct Result: Sendable {
-        public let captured:ChessPiece.Active?
-        public let promotion:ChessPiece?
+        public let captured:PieceType.Active?
+        public let promotion:PieceType?
         public let opponentInCheck:Bool
         public let opponentWasCheckmated:Bool
 
         public init(
-            captured: ChessPiece.Active?,
-            promotion: ChessPiece?,
+            captured: PieceType.Active?,
+            promotion: PieceType?,
             opponentInCheck: Bool,
             opponentWasCheckmated: Bool
         ) {

@@ -1,10 +1,10 @@
 
 // MARK: Attack
 @freestanding(expression)
-public macro chessAttack(
+public macro chessAttack<let count: Int>(
     player: PlayerColor = .white,
-    piece: ChessPiece
-) -> [64 of UInt64] = #externalMacro(module: "Macros", type: "ChessAttack")
+    piece: PieceType
+) -> [count of UInt64] = #externalMacro(module: "Macros", type: "ChessAttack")
 
 // MARK: Bit Map
 @freestanding(expression)

@@ -3,13 +3,13 @@ import ChessUtilities
 
 // MARK: Bishop
 extension BitMap {
-    static let whitePawnAttacks:[64 of UInt64] = #chessAttack(player: .white, piece: .pawn)
-    static let blackPawnAttacks:[64 of UInt64] = #chessAttack(player: .black, piece: .pawn)
-    static let bishopAttacks:[64 of UInt64] = #chessAttack(piece: .bishop)
-    static let knightAttacks:[64 of UInt64] = #chessAttack(piece: .knight)
-    static let rookAttacks:[64 of UInt64] = #chessAttack(piece: .rook)
-    static let queenAttacks:[64 of UInt64] = #chessAttack(piece: .queen)
-    static let kingAttacks:[64 of UInt64] = #chessAttack(piece: .king)
+    static let whitePawnAttacks:[64 of BitMap] = #chessAttack(player: .white, piece: .pawn)
+    static let blackPawnAttacks:[64 of BitMap] = #chessAttack(player: .black, piece: .pawn)
+    static let bishopAttacks:[64 of BitMap] = #chessAttack(piece: .bishop)
+    static let knightAttacks:[64 of BitMap] = #chessAttack(piece: .knight)
+    static let rookAttacks:[64 of BitMap] = #chessAttack(piece: .rook)
+    static let queenAttacks:[64 of BitMap] = #chessAttack(piece: .queen)
+    static let kingAttacks:[64 of BitMap] = #chessAttack(piece: .king)
 }
 
 // MARK: Pawn

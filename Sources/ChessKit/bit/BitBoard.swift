@@ -12,44 +12,44 @@ extension BitBoard {
     init() {
         var position:BitMap = BitMap.fileA & .rank8
         let black = Player(
-            king: .init(position: position >> 4, type: .king),
+            king: .init(position: position >> 4, type: .king, owner: .black),
             pieces: [
-                .init(position: position, type: .rook),
-                .init(position: position >> 1, type: .knight),
-                .init(position: position >> 2, type: .bishop),
-                .init(position: position >> 3, type: .queen),
-                .init(position: position >> 5, type: .bishop),
-                .init(position: position >> 6, type: .knight),
-                .init(position: position >> 7, type: .rook),
-                .init(position: position >> 8, type: .pawn(isWhite: false)),
-                .init(position: position >> 9, type: .pawn(isWhite: false)),
-                .init(position: position >> 10, type: .pawn(isWhite: false)),
-                .init(position: position >> 11, type: .pawn(isWhite: false)),
-                .init(position: position >> 12, type: .pawn(isWhite: false)),
-                .init(position: position >> 13, type: .pawn(isWhite: false)),
-                .init(position: position >> 14, type: .pawn(isWhite: false)),
-                .init(position: position >> 15, type: .pawn(isWhite: false))
+                .init(position: position, type: .rook, owner: .black),
+                .init(position: position >> 1, type: .knight, owner: .black),
+                .init(position: position >> 2, type: .bishop, owner: .black),
+                .init(position: position >> 3, type: .queen, owner: .black),
+                .init(position: position >> 5, type: .bishop, owner: .black),
+                .init(position: position >> 6, type: .knight, owner: .black),
+                .init(position: position >> 7, type: .rook, owner: .black),
+                .init(position: position >> 8, type: .pawn, owner: .black),
+                .init(position: position >> 9, type: .pawn, owner: .black),
+                .init(position: position >> 10, type: .pawn, owner: .black),
+                .init(position: position >> 11, type: .pawn, owner: .black),
+                .init(position: position >> 12, type: .pawn, owner: .black),
+                .init(position: position >> 13, type: .pawn, owner: .black),
+                .init(position: position >> 14, type: .pawn, owner: .black),
+                .init(position: position >> 15, type: .pawn, owner: .black)
             ]
         )
         position = .fileH & .rank1
         let white = Player(
-            king: .init(position: position << 3, type: .king),
+            king: .init(position: position << 3, type: .king, owner: .white),
             pieces: [
-                .init(position: position, type: .rook),
-                .init(position: position << 1, type: .knight),
-                .init(position: position << 2, type: .bishop),
-                .init(position: position << 4, type: .queen),
-                .init(position: position << 5, type: .bishop),
-                .init(position: position << 6, type: .knight),
-                .init(position: position << 7, type: .rook),
-                .init(position: position << 8, type: .pawn(isWhite: true)),
-                .init(position: position << 9, type: .pawn(isWhite: true)),
-                .init(position: position << 10, type: .pawn(isWhite: true)),
-                .init(position: position << 11, type: .pawn(isWhite: true)),
-                .init(position: position << 12, type: .pawn(isWhite: true)),
-                .init(position: position << 13, type: .pawn(isWhite: true)),
-                .init(position: position << 14, type: .pawn(isWhite: true)),
-                .init(position: position << 15, type: .pawn(isWhite: true))
+                .init(position: position, type: .rook, owner: .white),
+                .init(position: position << 1, type: .knight, owner: .white),
+                .init(position: position << 2, type: .bishop, owner: .white),
+                .init(position: position << 4, type: .queen, owner: .white),
+                .init(position: position << 5, type: .bishop, owner: .white),
+                .init(position: position << 6, type: .knight, owner: .white),
+                .init(position: position << 7, type: .rook, owner: .white),
+                .init(position: position << 8, type: .pawn, owner: .white),
+                .init(position: position << 9, type: .pawn, owner: .white),
+                .init(position: position << 10, type: .pawn, owner: .white),
+                .init(position: position << 11, type: .pawn, owner: .white),
+                .init(position: position << 12, type: .pawn, owner: .white),
+                .init(position: position << 13, type: .pawn, owner: .white),
+                .init(position: position << 14, type: .pawn, owner: .white),
+                .init(position: position << 15, type: .pawn, owner: .white)
             ]
         )
         self.black = black

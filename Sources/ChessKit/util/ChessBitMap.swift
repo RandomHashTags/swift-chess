@@ -4,5 +4,5 @@ public enum ChessBitMap {
     case newGame
     case universal
 
-    case startingPositions(forPiece: ChessPiece, forWhite: Bool)
+    case startingPositions(forPiece: PieceType, forWhite: Bool)
 }
