@@ -1,4 +1,4 @@
-import ChessUtilities
+
 import SwiftDiagnostics
 import SwiftSyntax
 import SwiftSyntaxMacros
@@ -13,17 +13,17 @@ enum LegalMoves: ExpressionMacro {
 }
 
 extension LegalMoves {
-    static func excludeUpLeftDiagonals(_ bitmap: inout BitMap) {
+    static func excludeUpLeftDiagonals(_ bitmap: inout UInt64) {
         bitmap &= ~(bitmap << 9 | bitmap << 18 | bitmap << 27 | bitmap << 36 | bitmap << 45 | bitmap << 54 | bitmap << 63)
     }
-    static func excludeUpRightDiagonals(_ bitmap: inout BitMap) {
+    static func excludeUpRightDiagonals(_ bitmap: inout UInt64) {
         bitmap &= ~(bitmap << 7 | bitmap << 14 | bitmap << 21 | bitmap << 28 | bitmap << 35 | bitmap << 42 | bitmap << 49)
     }
     
-    static func excludeDownLeftDiagonals(_ bitmap: inout BitMap) {
+    static func excludeDownLeftDiagonals(_ bitmap: inout UInt64) {
         bitmap &= ~(bitmap >> 7 | bitmap >> 14 | bitmap >> 21 | bitmap >> 28 | bitmap >> 35 | bitmap >> 42 | bitmap >> 49)
     }
-    static func excludeDownRightDiagonals(_ bitmap: inout BitMap) {
+    static func excludeDownRightDiagonals(_ bitmap: inout UInt64) {
         bitmap &= ~(bitmap >> 9 | bitmap >> 18 | bitmap >> 27 | bitmap >> 36 | bitmap >> 45 | bitmap >> 54 | bitmap >> 63)
     }
 }

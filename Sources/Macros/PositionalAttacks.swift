@@ -1,5 +1,4 @@
 
-import ChessUtilities
 import SwiftDiagnostics
 import SwiftSyntax
 import SwiftSyntaxMacros
@@ -13,15 +12,15 @@ enum PositionalAttacks: ExpressionMacro {
         var white = true
         for argument in node.arguments {
             switch argument.label?.text {
-            case "player":
+            case "with":
                 white = argument.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text == "white"
-            case "piece":
+            case "for":
                 piece = argument.expression.as(MemberAccessExprSyntax.self)?.declName.baseName.text ?? "pawn"
             default:
                 break
             }
         }
-        var array = [BitMap](repeating: 0, count: 64)
+        var array = [UInt64](repeating: 0, count: 64)
         var index = 0
         var file = 8
         var rank = 1
@@ -37,13 +36,13 @@ enum PositionalAttacks: ExpressionMacro {
         return "\(raw: array)"
     }
 
-    static func position(file: Int, rank: Int) -> BitMap {
+    static func position(file: Int, rank: Int) -> UInt64 {
         let (f, r) = position(file: file, rank: rank)
         return f & r
     }
-    static func position(file: Int, rank: Int) -> (file: BitMap, rank: BitMap) {
-        let f:BitMap
-        let r:BitMap
+    static func position(file: Int, rank: Int) -> (file: UInt64, rank: UInt64) {
+        let f:UInt64
+        let r:UInt64
         switch file {
         case 1: f = .fileA
         case 2: f = .fileB
@@ -67,7 +66,7 @@ enum PositionalAttacks: ExpressionMacro {
         return (f, r)
     }
 
-    static func get(piece: String, white: Bool, file: Int, rank: Int) -> BitMap {
+    static func get(piece: String, white: Bool, file: Int, rank: Int) -> UInt64 {
         switch piece {
         case "pawn":   return pawn(white: white, file: file, rank: rank)
         case "knight": return knight(file: file, rank: rank)
@@ -80,14 +79,14 @@ enum PositionalAttacks: ExpressionMacro {
     }
 
     // MARK: Pawn
-    static func pawn(white: Bool, file: Int, rank: Int) -> BitMap {
-        let pos:BitMap = position(file: file, rank: rank)
+    static func pawn(white: Bool, file: Int, rank: Int) -> UInt64 {
+        let pos:UInt64 = position(file: file, rank: rank)
         return white ? pos << 9 | pos << 7 : pos >> 7 | pos >> 9
     }
 
     // MARK: Knight
-    static func knight(file: Int, rank: Int) -> BitMap {
-        let pos:BitMap = position(file: file, rank: rank)
+    static func knight(file: Int, rank: Int) -> UInt64 {
+        let pos:UInt64 = position(file: file, rank: rank)
         var value = pos
         if file != 1 { // a
             if rank > 2 {
@@ -132,8 +131,8 @@ enum PositionalAttacks: ExpressionMacro {
     static func bishop(
         file: Int,
         rank: Int
-    ) -> BitMap {
-        let pos:BitMap = position(file: file, rank: rank)
+    ) -> UInt64 {
+        let pos:UInt64 = position(file: file, rank: rank)
         let posFile = Int8(file-1)
         let posRank = Int8(rank-1)
 
@@ -180,19 +179,19 @@ enum PositionalAttacks: ExpressionMacro {
     }
 
     // MARK: Rook
-    static func rook(file: Int, rank: Int) -> BitMap {
+    static func rook(file: Int, rank: Int) -> UInt64 {
         let (f, r) = position(file: file, rank: rank)
         return (f | r) & ~(f & r)
     }
 
     // MARK: Queen
-    static func queen(file: Int, rank: Int) -> BitMap {
+    static func queen(file: Int, rank: Int) -> UInt64 {
         return bishop(file: file, rank: rank) | rook(file: file, rank: rank)
     }
 
     // MARK: King
-    static func king(file: Int, rank: Int) -> BitMap {
-        let pos:BitMap = position(file: file, rank: rank)
+    static func king(file: Int, rank: Int) -> UInt64 {
+        let pos:UInt64 = position(file: file, rank: rank)
         var value = pos
 
         let notAFile = pos & ~.fileA > 0

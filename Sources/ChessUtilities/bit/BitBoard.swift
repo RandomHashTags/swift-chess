@@ -1,8 +1,7 @@
 
 public struct BitBoard: Sendable {
     public package(set) var occupied:BitMap
-    public package(set) var whitePieces:BitMap
-    public package(set) var blackPieces:BitMap
+    public package(set) var colorPieces:[2 of BitMap]
 
     /// - Index 0: Pawns
     /// - Index 1: Bishops
@@ -21,21 +20,18 @@ public struct BitBoard: Sendable {
 // MARK: Init
 extension BitBoard {
     public init(
-        whitePieces: BitMap,
-        blackPieces: BitMap,
+        colorPieces: [2 of BitMap],
         pieces: [7 of BitMap]
     ) {
-        occupied = whitePieces | blackPieces
-        self.whitePieces = whitePieces
-        self.blackPieces = blackPieces
+        occupied = colorPieces[0] | colorPieces[1]
+        self.colorPieces = colorPieces
         self.pieces = pieces
     }
 
     public init() {
         let whitePieces = BitMap.rank1 | .rank2
         let blackPieces = BitMap.rank7 | .rank8
-        self.whitePieces = whitePieces
-        self.blackPieces = blackPieces
+        colorPieces = [whitePieces, blackPieces]
         occupied = whitePieces | blackPieces
 
         let rank1Or8 = BitMap.rank1 | .rank8
@@ -54,24 +50,21 @@ extension BitBoard {
 extension BitBoard {
     /// - Warning: Does not check if the move is legal!
     public mutating func makeMove(
-        from: BitMap,
-        to: BitMap,
-        pieceTypeIndex: PieceTypeIndex,
-        capturedPieceTypeIndex: PieceTypeIndex
+        _ move: Move
     ) {
-        let moveMask = from | to
-        // toggle move bits
-        occupied ^= moveMask
-
+        let moveMask = move.from | move.to
         // handle captures
-        occupied ^= (occupied & to) > 0 ? occupied : 0
+        if occupied & move.to > 0 {
+            occupied ^= move.from
+        } else {
+            occupied ^= moveMask
+        }
 
         // update piece colors
-        whitePieces ^= (whitePieces & from) > 0 ? moveMask : 0
-        blackPieces ^= (blackPieces & from) > 0 ? moveMask : 0
+        colorPieces[move.colorIndex] ^= moveMask
 
         // update piece types
-        pieces[pieceTypeIndex] ^= moveMask
-        pieces[capturedPieceTypeIndex] ^= to
+        pieces[move.pieceTypeIndex] ^= moveMask
+        pieces[move.capturedPieceTypeIndex] ^= move.to
     }
 }

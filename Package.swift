@@ -31,12 +31,14 @@ let package = Package(
         )
     ],
     targets: [
-        .target(name: "ChessUtilities"),
+        .target(
+            name: "ChessUtilities",
+            dependencies: ["Macros"]
+        ),
 
         .macro(
             name: "Macros",
             dependencies: [
-                "ChessUtilities",
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
                 .product(name: "SwiftDiagnostics", package: "swift-syntax"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
