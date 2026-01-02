@@ -1,4 +1,6 @@
 
+import ChessUtilities
+
 public struct Game: Sendable {
     public let clock:ContinuousClock
     public let chessClock:ChessClock?

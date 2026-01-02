@@ -1,4 +1,6 @@
 
+import ChessUtilities
+
 public enum ChessBitMap {
     case empty
     case newGame

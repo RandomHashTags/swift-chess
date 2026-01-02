@@ -3,6 +3,7 @@ import ChessUtilities
 
 // MARK: Attacks
 extension BitBoard {
+    /*
     /// - Warning: `position` must only contain 1 piece.
     func attacks(for position: BitMap) -> BitMap {
         pawns & position > 0 ? blackPieces & position > 0 ? .blackPawnAttacks[position] : .whitePawnAttack(at: position)
@@ -11,5 +12,5 @@ extension BitBoard {
             : rooks   & position > 0 ? .rookAttack(at: position)
             : queens  & position > 0 ? .queenAttack(at: position)
             : .kingAttack(at: position)
-    }
+    }*/
 }

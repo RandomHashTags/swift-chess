@@ -1,5 +1,6 @@
 
 import ChessKit
+import ChessUtilities
 
 var game = Game()
 game.display()

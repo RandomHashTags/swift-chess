@@ -1,11 +1,5 @@
 
-public enum PlayerColor: Sendable {
-    /// Player 1.
-    case white
-
-    /// Player 2.
-    case black
-}
+import ChessUtilities
 
 // MARK: Starting positions
 extension PlayerColor {

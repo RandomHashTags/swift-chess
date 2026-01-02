@@ -1,4 +1,6 @@
 
+import ChessUtilities
+
 // MARK: Attack
 @freestanding(expression)
 public macro chessAttack<let count: Int>(

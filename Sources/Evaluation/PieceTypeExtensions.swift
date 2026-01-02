@@ -1,5 +1,6 @@
 
 import ChessKit
+import ChessUtilities
 
 extension PieceType {
     public var score: Float {

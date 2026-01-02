@@ -4,12 +4,14 @@ public struct BitBoard: Sendable {
     public package(set) var whitePieces:BitMap
     public package(set) var blackPieces:BitMap
 
-    public package(set) var pawns:BitMap
-    public package(set) var bishops:BitMap
-    public package(set) var knights:BitMap
-    public package(set) var rooks:BitMap
-    public package(set) var queens:BitMap
-    public package(set) var kings:BitMap
+    /// - Index 0: Pawns
+    /// - Index 1: Bishops
+    /// - Index 2: Knights
+    /// - Index 3: Rooks
+    /// - Index 4: Queens
+    /// - Index 5: Kings
+    /// - Index 6: Junk
+    public package(set) var pieces:[7 of BitMap]
 
     public var empty: BitMap {
         ~occupied
@@ -21,22 +23,12 @@ extension BitBoard {
     public init(
         whitePieces: BitMap,
         blackPieces: BitMap,
-        pawns: BitMap,
-        bishops: BitMap,
-        knights: BitMap,
-        rooks: BitMap,
-        queens: BitMap,
-        kings: BitMap
+        pieces: [7 of BitMap]
     ) {
         occupied = whitePieces | blackPieces
         self.whitePieces = whitePieces
         self.blackPieces = blackPieces
-        self.pawns = pawns
-        self.bishops = bishops
-        self.knights = knights
-        self.rooks = rooks
-        self.queens = queens
-        self.kings = kings
+        self.pieces = pieces
     }
 
     public init() {
@@ -47,31 +39,39 @@ extension BitBoard {
         occupied = whitePieces | blackPieces
 
         let rank1Or8 = BitMap.rank1 | .rank8
-        pawns   = .rank2 | .rank7
-        bishops = (.fileC & rank1Or8) | (.fileF & rank1Or8)
-        knights = (.fileB & rank1Or8) | (.fileG & rank1Or8)
-        rooks   = (.fileA & rank1Or8) | (.fileH & rank1Or8)
-        queens  = (.fileD & .rank8)   | (.fileE & .rank1)
-        kings   = (.fileE & .rank8)   | (.fileD & .rank1)
+        var pieces = [7 of BitMap](repeating: 0)
+        pieces[0] = .rank2 | .rank7
+        pieces[1] = (.fileC & rank1Or8) | (.fileF & rank1Or8)
+        pieces[2] = (.fileB & rank1Or8) | (.fileG & rank1Or8)
+        pieces[3] = (.fileA & rank1Or8) | (.fileH & rank1Or8)
+        pieces[4] = (.fileD & .rank8)   | (.fileE & .rank1)
+        pieces[5] = (.fileE & .rank8)   | (.fileD & .rank1)
+        self.pieces = pieces
     }
 }
 
 // MARK: Move
 extension BitBoard {
     /// - Warning: Does not check if the move is legal!
-    package mutating func move(
+    public mutating func makeMove(
         from: BitMap,
-        to: BitMap
+        to: BitMap,
+        pieceTypeIndex: PieceTypeIndex,
+        capturedPieceTypeIndex: PieceTypeIndex
     ) {
         let moveMask = from | to
+        // toggle move bits
         occupied ^= moveMask
+
+        // handle captures
+        occupied ^= (occupied & to) > 0 ? occupied : 0
+
+        // update piece colors
         whitePieces ^= (whitePieces & from) > 0 ? moveMask : 0
         blackPieces ^= (blackPieces & from) > 0 ? moveMask : 0
-        pawns   ^= (pawns & from) > 0 ? moveMask : 0
-        bishops ^= (bishops & from) > 0 ? moveMask : 0
-        knights ^= (knights & from) > 0 ? moveMask : 0
-        rooks   ^= (rooks & from) > 0 ? moveMask : 0
-        queens  ^= (queens & from) > 0 ? moveMask : 0
-        kings   ^= (kings & from) > 0 ? moveMask : 0
+
+        // update piece types
+        pieces[pieceTypeIndex] ^= moveMask
+        pieces[capturedPieceTypeIndex] ^= to
     }
 }

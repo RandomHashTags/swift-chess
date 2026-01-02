@@ -1,4 +1,13 @@
 
+/// - Index 0: Pawns
+/// - Index 1: Bishops
+/// - Index 2: Knights
+/// - Index 3: Rooks
+/// - Index 4: Queens
+/// - Index 5: Kings
+/// - Index 6: Junk
+public typealias PieceTypeIndex = Int
+
 public enum PieceType: Hashable, Sendable {
     case pawn
 
@@ -9,19 +18,6 @@ public enum PieceType: Hashable, Sendable {
     case queen
 
     case king
-}
-
-// MARK: Active
-extension PieceType {
-    public struct Active: Hashable, Sendable {
-        public var piece:PieceType
-        public var owner:PlayerColor
-        public var firstMove:Bool
-
-        public func `is`(_ piece: PieceType) -> Bool {
-            return self.piece == piece
-        }
-    }
 }
 
 // MARK: Notation

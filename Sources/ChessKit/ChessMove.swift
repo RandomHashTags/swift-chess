@@ -1,4 +1,6 @@
 
+import ChessUtilities
+
 public struct ChessMove: CustomStringConvertible, Hashable, Sendable {
     public let from:Position
     public let to:Position

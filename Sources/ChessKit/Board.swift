@@ -1,4 +1,6 @@
 
+import ChessUtilities
+
 public struct Board: Sendable {
     /// Horizontal
     public let files:Int
