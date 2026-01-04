@@ -81,7 +81,25 @@ enum PositionalAttacks: ExpressionMacro {
     // MARK: Pawn
     static func pawn(white: Bool, file: Int, rank: Int) -> UInt64 {
         let pos:UInt64 = position(file: file, rank: rank)
-        return white ? pos << 9 | pos << 7 : pos >> 7 | pos >> 9
+        var moves:UInt64 = 0
+        if white {
+            moves |= pos << 8 | (rank == 2 ? pos << 16 : 0)
+            if file != 1 {
+                moves |= pos << 9
+            }
+            if file != 8 {
+                moves |= pos << 7
+            }
+        } else {
+            moves |= pos >> 8 | (rank == 7 ? pos >> 16 : 0)
+            if file != 1 {
+                moves |= pos >> 7
+            }
+            if file != 8 {
+                moves |= pos >> 9
+            }
+        }
+        return moves
     }
 
     // MARK: Knight

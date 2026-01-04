@@ -1,9 +1,10 @@
 
 import Testing
 @testable import ChessKit
+@testable import ChessUtilities
 
 struct SwiftChessTests {
-    let game:Game = Game(chessClock: nil, board: Board(), player1: .white, player2: .black, firstMove: .white)
+    let game:Game = Game(chessClock: nil, board: Board(), firstMove: .white)
 
     @Test func positionDistance() {
         var one = Position(file: 4, rank: 0)

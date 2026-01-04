@@ -58,11 +58,17 @@ extension BitMap {
 }
 
 extension BitMap {
-    public static func psedoAttacks(
+    public static func pseudoAttacks(
         colorIndex: Int,
         pieceTypeIndex: PieceTypeIndex,
         position: BitMap
     ) -> BitMap {
         pseudoAttacks[colorIndex][pieceTypeIndex][position]
+    }
+}
+
+extension BitMap {
+    public var position: BitMap {
+        BitMap(trailingZeroBitCount)
     }
 }

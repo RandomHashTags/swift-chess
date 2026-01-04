@@ -8,6 +8,16 @@
 /// - Index 6: Junk
 public typealias PieceTypeIndex = Int
 
+extension PieceTypeIndex {
+    @inline(__always) public static var pawn:   Self { 0 }
+    @inline(__always) public static var bishop: Self { 1 }
+    @inline(__always) public static var knight: Self { 2 }
+    @inline(__always) public static var rook:   Self { 3 }
+    @inline(__always) public static var queen:  Self { 4 }
+    @inline(__always) public static var king:   Self { 5 }
+    @inline(__always) public static var junk:   Self { 6 }
+}
+
 public enum PieceType: Hashable, Sendable {
     case pawn
 
