@@ -40,11 +40,11 @@ extension BitBoard {
         let rank1Or8 = BitMap.rank1 | .rank8
         var pieces = [7 of BitMap](repeating: 0)
         pieces[0] = .rank2 | .rank7
-        pieces[1] = (.fileC & rank1Or8) | (.fileF & rank1Or8)
-        pieces[2] = (.fileB & rank1Or8) | (.fileG & rank1Or8)
-        pieces[3] = (.fileA & rank1Or8) | (.fileH & rank1Or8)
-        pieces[4] = (.fileD & .rank8)   | (.fileE & .rank1)
-        pieces[5] = (.fileE & .rank8)   | (.fileD & .rank1)
+        pieces[1] = (.fileC | .fileF) & rank1Or8
+        pieces[2] = (.fileB | .fileG) & rank1Or8
+        pieces[3] = (.fileA | .fileH) & rank1Or8
+        pieces[4] = .fileD & rank1Or8
+        pieces[5] = .fileE & (.rank1 | .rank8)
         self.pieces = pieces
     }
 }
