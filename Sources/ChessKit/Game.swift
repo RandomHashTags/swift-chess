@@ -3,43 +3,39 @@ import ChessUtilities
 
 public struct Game: Sendable {
     public let clock:ContinuousClock
-    public let chessClock:ChessClock?
+    public let timeControl:TimeControl?
     public let board:Board
     public var move = 1
 
     public var thinkingInstant:ContinuousClock.Instant
-    public var player1RemainingThinkDuration:ContinuousClock.Duration
-    public var player2RemainingThinkDuration:ContinuousClock.Duration
+    var remainingThinkDurations:[2 of ContinuousClock.Duration]
     public var positions:[Position:PieceType.Active]
 
     public var log:[LogEntry]
 
-    /// Which player got to make the first move.
-    public let firstMove:PlayerColor
-
     /// Who's turn it is to make a move.
     public var thinking:PlayerColor
+
+    /// - `false` = white
+    /// - `true` = black
+    var thinkingIndex:Bool
 
     var flags:Flags.RawValue
 
     public init(
-        chessClock: ChessClock? = nil,
-        board: Board = Board(),
-        firstMove: PlayerColor = .white
+        timeControl: TimeControl? = nil,
+        board: Board = Board()
     ) {
         clock = ContinuousClock()
-        self.chessClock = chessClock
-        if let chessClock {
-            player1RemainingThinkDuration = chessClock.duration
-            player2RemainingThinkDuration = chessClock.duration
+        self.timeControl = timeControl
+        if let timeControl {
+            remainingThinkDurations = [timeControl.duration, timeControl.duration]
         } else {
-            player1RemainingThinkDuration = .zero
-            player2RemainingThinkDuration = .zero
+            remainingThinkDurations = [.zero, .zero]
         }
+        thinkingIndex = false
         self.board = board
-        self.firstMove = firstMove
-        thinking = firstMove
-        thinkingInstant = clock.now
+        thinking = .white
         var pos = [Position:PieceType.Active]()
         for piece in [PieceType.pawn, .rook, .knight, .bishop, .queen, .king] {
             let positions1 = PlayerColor.white.startingPositions(for: piece, at: board)
@@ -54,12 +50,12 @@ public struct Game: Sendable {
         positions = pos
         log = []
         flags = 0
+        thinkingInstant = clock.now
     }
 
     public mutating func start() {
         guard !isActive else { return }
         setFlag(.active, value: true)
-        thinking = firstMove
         thinkingInstant = clock.now
     }
     public mutating func end() {
@@ -130,29 +126,18 @@ extension Game {
         piece.firstMove = false
         positions[move.to] = piece
         log.append(.init(thinkDuration: thinkDuration, player: thinking, piece: piece.piece, move: move))
-        switch thinking {
-        case .black:
-            if let chessClock {
-                player2RemainingThinkDuration -= thinkDuration
-                if let increment = chessClock.increment(self.move) {
-                    player2RemainingThinkDuration += increment
-                }
-            }
-            thinking = .white
-        case .white:
-            if let chessClock {
-                player1RemainingThinkDuration -= thinkDuration
-                if let increment = chessClock.increment(self.move) {
-                    player1RemainingThinkDuration += increment
-                }
-            }
+        if let timeControl {
+            remainingThinkDurations[unsafeBitCast(thinkingIndex, to: Int.self)] -= thinkDuration - timeControl.increment
+        }
+        thinkingIndex.toggle()
+        self.move += 1
+        if thinkingIndex {
             thinking = .black
+        } else {
+            thinking = .white
         }
-        if thinking == firstMove {
-            self.move += 1
-        }
-        thinkingInstant = clock.now
         calculateCheckStatus()
+        thinkingInstant = clock.now
         return .init(captured: captured, promotion: move.promotion, opponentInCheck: inCheck, opponentWasCheckmated: inCheckmate)
     }
 }

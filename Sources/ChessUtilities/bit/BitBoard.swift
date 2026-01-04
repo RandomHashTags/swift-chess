@@ -1,6 +1,9 @@
 
 public struct BitBoard: Sendable {
     public package(set) var occupied:BitMap
+
+    /// - Index 0: White
+    /// - Index 1: Black
     public package(set) var colorPieces:[2 of BitMap]
 
     /// - Index 0: Pawns
@@ -66,5 +69,62 @@ extension BitBoard {
         // update piece types
         pieces[move.pieceTypeIndex] ^= moveMask
         pieces[move.capturedPieceTypeIndex] ^= move.to
+    }
+}
+
+// MARK: Display
+extension BitBoard {
+    public func display() {
+        let fenNotations:[2 of [6 of String]] = [
+            [
+                PieceType.pawn.notationFEN(for: .white),
+                PieceType.bishop.notationFEN(for: .white),
+                PieceType.knight.notationFEN(for: .white),
+                PieceType.rook.notationFEN(for: .white),
+                PieceType.queen.notationFEN(for: .white),
+                PieceType.king.notationFEN(for: .white)
+            ],
+            [
+                PieceType.pawn.notationFEN(for: .black),
+                PieceType.bishop.notationFEN(for: .black),
+                PieceType.knight.notationFEN(for: .black),
+                PieceType.rook.notationFEN(for: .black),
+                PieceType.queen.notationFEN(for: .black),
+                PieceType.king.notationFEN(for: .black)
+            ]
+        ]
+        var pieceNotations = [64 of Character](repeating: "-")
+        for file in 0..<8 {
+            for rank in 0..<8 {
+                let index = file + rank*8
+                let position:BitMap = 1 << BitMap(index)
+                if occupied & position > 0 {
+                    let colorIndex:Int
+                    if colorPieces[0] & position > 0 {
+                        colorIndex = 0
+                    } else {
+                        colorIndex = 1
+                    }
+                    var pieceType = 0
+                    for i in 0..<pieces.count {
+                        if pieces[i] & position > 0 {
+                            pieceType = i
+                            break
+                        }
+                    }
+                    pieceNotations[index] = fenNotations[colorIndex][pieceType].first!
+                }
+            }
+        }
+        var s = ""
+        s.reserveCapacity(72)
+        for i in pieceNotations.indices {
+            if i != 0 && i % 8 == 0 {
+                s.append("\n")
+            }
+            let value = pieceNotations[i]
+            s.append(value)
+        }
+        print(String(s.reversed()))
     }
 }

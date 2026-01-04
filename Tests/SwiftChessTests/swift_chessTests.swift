@@ -4,7 +4,7 @@ import Testing
 @testable import ChessUtilities
 
 struct SwiftChessTests {
-    let game:Game = Game(chessClock: nil, board: Board(), firstMove: .white)
+    let game:Game = Game(timeControl: nil, board: Board())
 
     @Test func positionDistance() {
         var one = Position(file: 4, rank: 0)

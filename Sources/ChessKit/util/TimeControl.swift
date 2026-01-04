@@ -1,11 +1,11 @@
 
-public struct ChessClock: Sendable {
+public struct TimeControl: Sendable {
     public let duration:ContinuousClock.Duration
-    public let increment:@Sendable (Int) -> Duration?
+    public let increment:Duration
 
     public init(
         duration: ContinuousClock.Duration,
-        increment: @escaping @Sendable (Int) -> Duration?
+        increment: Duration
     ) {
         self.duration = duration
         self.increment = increment
