@@ -44,7 +44,7 @@ extension BitBoard {
         pieces[2] = (.fileB | .fileG) & rank1Or8
         pieces[3] = (.fileA | .fileH) & rank1Or8
         pieces[4] = .fileD & rank1Or8
-        pieces[5] = .fileE & (.rank1 | .rank8)
+        pieces[5] = .fileE & rank1Or8
         self.pieces = pieces
     }
 }
